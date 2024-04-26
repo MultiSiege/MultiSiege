@@ -19,19 +19,10 @@ class AccountModel(BaseModel):
         return v
 
 class FeaturesModel(BaseModel):
-    mode: Mode | str = Mode.LIGHT # sometimes we are importing from a file so need to convert to the enum first
+    mode: Mode = Mode.LIGHT
     instances_folder: str = './instances'
     mods_folder: str = './mods'
     check_for_update_on_start: bool = True
-
-    @field_validator('mode')
-    def check_valid_mode(cls, v: Mode | str, info: ValidationInfo) -> Mode:
-        if isinstance(v, str):
-            if v not in Mode:
-                #in case we get an invalid mode from people tampering with the file, we will just reset it back to the default.
-                return Mode.LIGHT
-            return Mode[v]
-        return v
     
     @field_serializer('mode', when_used='json')
     def convert_mode_to_str(mode: Mode) -> str:
