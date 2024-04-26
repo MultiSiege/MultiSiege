@@ -1,4 +1,4 @@
-from pydantic import BaseModel, StrictStr, Field, field_validator, ValidationInfo, field_serializer
+from pydantic import BaseModel, field_validator, ValidationInfo, field_serializer
 from constants import *
 import os
 
