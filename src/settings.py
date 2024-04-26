@@ -79,6 +79,7 @@ class GlobalSettings(Settings):
         """
         try:
             self.settings.__setattr__(name=field_name, value=value)
+            self.settings = GlobalSettingsModel(**self.settings.model_dump_json()) #needs to remake the model to go through the field validators
             self.dump_settings()
         except:
             logger.log("Could not update setting (invalid field)", LogLevel.ERROR)
@@ -152,6 +153,7 @@ class InstanceSettings(Settings):
         """
         try:
             self.settings.__setattr__(name=field_name, value=value)
+            self.settings = InstanceSettingsModel(**self.settings.model_dump_json()) #need to remake the model to go through the field validators 
             self.dump_settings()
         except:
             logger.log("Could not update setting (invalid field)", LogLevel.ERROR)
