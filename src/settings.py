@@ -6,6 +6,8 @@ from typing import Any, Optional
 import logger
 from abc import ABC, abstractmethod
 
+
+#test change
 class Settings(ABC):
     """
     Abstract class defining what methods a settings object needs to have.
