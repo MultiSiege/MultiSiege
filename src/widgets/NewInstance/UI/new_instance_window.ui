@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>New Instance - MultiSiege</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../../../assets/main_window/icons.qrc">
+    <normaloff>:/top_nav_bar/magic-wand-icon.svg</normaloff>:/top_nav_bar/magic-wand-icon.svg</iconset>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="3" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -635,7 +639,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../assets/main_window/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>
