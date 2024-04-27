@@ -1,12 +1,10 @@
 import sys
-
 from PySide6 import (
     QtCore as qtc,
     QtWidgets as qtw,
     QtGui as qtg
 )
-
-from windows.main_window import Ui_MainWindow
+from windows import *
 
 class MainWindow(qtw.QWidget, Ui_MainWindow):
     def __init__(self):

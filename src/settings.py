@@ -167,3 +167,9 @@ class InstanceSettings(Settings):
                 f.write(self.settings.model_dump_json())
             except:
                 logger.log(f"Unable to write to instance {self.settings.name} settings file.", LogLevel.ERROR)
+
+#explicitly declare the outwards facing API of this module
+__all__ = [
+    "GlobalSettings",
+    "InstanceSettings"
+]
