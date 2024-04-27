@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="top_nav_bar">
+    <file>Steam_icon_logo.svg</file>
+    <file>Blue_Question_Mark_clip_art.svg</file>
+    <file>285658_blue_folder_icon.svg</file>
+    <file>magic-wand-icon.svg</file>
+    <file>settings-cog.svg</file>
+  </qresource>
+  <qresource prefix="side_nav_bar">
+    <file>rainbow-six-siege-logo-logo-svg-vector.svg</file>
+  </qresource>
+</RCC>
