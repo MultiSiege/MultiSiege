@@ -94,6 +94,14 @@ class GlobalSettings(Settings):
             except:
                 logger.log("Unable to write to global settings file.", LogLevel.ERROR)
 
+    @property
+    def features(self) -> FeaturesModel:
+        return self.get_setting("features")
+    
+    @property
+    def accounts(self) -> list[AccountModel]:
+        return self.get_setting("accounts")
+
 class InstanceSettings(Settings):
     def __init__(self, settings_path: str, *, name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None, instance_directory: Optional[str] = None, siege_directory: Optional[str] = None):
         self.SETTINGS_PATH = settings_path
@@ -167,6 +175,26 @@ class InstanceSettings(Settings):
                 f.write(self.settings.model_dump_json())
             except:
                 logger.log(f"Unable to write to instance {self.settings.name} settings file.", LogLevel.ERROR)
+
+    @property
+    def instance_name(self):
+        return self.get_setting("instance_name")
+    
+    @property
+    def username(self):
+        return self.get_setting("username")
+
+    @property
+    def version(self):
+        return self.get_setting("version")
+
+    @property
+    def instance_directory(self):
+        return self.get_setting("instance_directory")
+    
+    @property
+    def siege_directory(self):
+        return self.get_setting("siege_directory")
 
 #explicitly declare the outwards facing API of this module
 __all__ = [
