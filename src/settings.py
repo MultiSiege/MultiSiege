@@ -93,6 +93,10 @@ class GlobalSettings(Settings):
                 f.write(self.settings.model_dump_json())
             except:
                 logger.log("Unable to write to global settings file.", LogLevel.ERROR)
+    
+    #==================#
+    #INDIVIDUAL GETTERS#
+    #==================#
 
     @property
     def features(self) -> FeaturesModel:
@@ -101,14 +105,24 @@ class GlobalSettings(Settings):
     @property
     def accounts(self) -> list[AccountModel]:
         return self.get_setting("accounts")
+    
+    #==================#
+    #INDIVIDUAL SETTERS#
+    #==================#
+
+    def set_features(self, features: FeaturesModel) -> None:
+        self.set_setting("features", features)
+
+    def set_accounts(self, accounts: list[AccountModel]) -> None:
+        self.set_setting("accounts", accounts)
 
 class InstanceSettings(Settings):
-    def __init__(self, settings_path: str, *, name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None, instance_directory: Optional[str] = None, siege_directory: Optional[str] = None):
+    def __init__(self, settings_path: str, *, instance_name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None, instance_directory: Optional[str] = None, siege_directory: Optional[str] = None):
         self.SETTINGS_PATH = settings_path
 
         if not os.path.isfile(self.SETTINGS_PATH): #if the file doesn't exist, it should mean that we have a new instance that we want to initialise with settings.
             self.create_settings(
-                name=name,
+                instance_name=instance_name,
                 username=username,
                 version=version,
                 instance_directory=instance_directory,
@@ -117,10 +131,10 @@ class InstanceSettings(Settings):
         else:#the file exists, so we should load data from the file
             self.load_from_file()
 
-    def create_settings(self, *, name: str, username: str, version: str , instance_directory: str, siege_directory: str) -> None:
+    def create_settings(self, *, instance_name: str, username: str, version: str , instance_directory: str, siege_directory: str) -> None:
         try:
             self.settings = InstanceSettingsModel(
-                name=name,
+                instance_name=instance_name,
                 username=username,
                 version=version,
                 instance_directory=instance_directory,
@@ -176,25 +190,48 @@ class InstanceSettings(Settings):
             except:
                 logger.log(f"Unable to write to instance {self.settings.name} settings file.", LogLevel.ERROR)
 
+    #==================#
+    #INDIVIDUAL GETTERS#
+    #==================#
+
     @property
-    def instance_name(self):
+    def instance_name(self) -> str:
         return self.get_setting("instance_name")
     
     @property
-    def username(self):
+    def username(self) -> str:
         return self.get_setting("username")
 
     @property
-    def version(self):
+    def version(self) -> SiegeVersions:
         return self.get_setting("version")
 
     @property
-    def instance_directory(self):
+    def instance_directory(self) -> str:
         return self.get_setting("instance_directory")
     
     @property
-    def siege_directory(self):
+    def siege_directory(self) -> str:
         return self.get_setting("siege_directory")
+    
+    #==================#
+    #INDIVIDUAL SETTERS#
+    #==================#
+
+    def set_instance_name(self, instance_name: str) -> None:
+        self.set_setting("instance_name", instance_name)
+
+    def set_username(self, username: str) -> None:
+        self.set_setting("username", username)
+
+    def set_version(self, version: SiegeVersions) -> None:
+        self.set_setting("version", version)
+
+    def set_instance_directory(self, instance_directory: str) -> None:
+        self.set_setting("instance_directory", instance_directory)
+
+    def set_siege_directory(self, siege_directory: str) -> None:
+        self.set_setting("siege_directory", siege_directory)
 
 #explicitly declare the outwards facing API of this module
 __all__ = [

@@ -44,7 +44,7 @@ class GlobalSettingsModel(BaseModel):
 #========================#
 
 class InstanceSettingsModel(BaseModel):
-    name: str 
+    instance_name: str 
     username: str
     version: SiegeVersions
     instance_directory: str
