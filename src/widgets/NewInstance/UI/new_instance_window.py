@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QDialog,
-    QDialogButtonBox, QFormLayout, QFrame, QGridLayout,
-    QHeaderView, QLabel, QLineEdit, QSizePolicy,
-    QSpacerItem, QTreeView, QWidget)
+from PySide6.QtWidgets import (QAbstractButton, QAbstractItemView, QApplication, QCheckBox,
+    QDialog, QDialogButtonBox, QFormLayout, QFrame,
+    QGridLayout, QHeaderView, QLabel, QLineEdit,
+    QSizePolicy, QSpacerItem, QTreeView, QWidget)
 from . import icons_rc
 
 class Ui_NewInstance(object):
@@ -168,6 +168,12 @@ class Ui_NewInstance(object):
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.treeView_seasons = QTreeView(self.season_widget)
         self.treeView_seasons.setObjectName(u"treeView_seasons")
+        self.treeView_seasons.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.treeView_seasons.setAlternatingRowColors(True)
+        self.treeView_seasons.setItemsExpandable(False)
+        self.treeView_seasons.setWordWrap(False)
+        self.treeView_seasons.header().setHighlightSections(True)
+        self.treeView_seasons.header().setStretchLastSection(True)
 
         self.gridLayout_4.addWidget(self.treeView_seasons, 0, 0, 1, 1)
 

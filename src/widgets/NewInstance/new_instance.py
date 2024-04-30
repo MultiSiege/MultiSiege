@@ -103,6 +103,10 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.filter_year5.clicked.connect(lambda: self.apply_year_filter(self.filter_year5, 5))
         self.filter_year6.clicked.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
 
+        #making sure that they cannot resize the sections
+        self.treeView_seasons.header().setSectionResizeMode(0, qtw.QHeaderView.ResizeMode.Fixed)
+        self.treeView_seasons.header().setSectionResizeMode(1, qtw.QHeaderView.ResizeMode.Fixed)
+
     #=======#
     #FILTERS#
     #=======#
