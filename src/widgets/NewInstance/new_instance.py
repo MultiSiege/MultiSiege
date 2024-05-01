@@ -4,7 +4,7 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-from UI.new_instance_window import Ui_NewInstance
+from NewInstance.UI.new_instance_window import Ui_NewInstance
 
 sys.path.append('src') #python can't usually find the constants module, so we have to manually append it to our path
 from constants import *
@@ -106,6 +106,7 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         #making sure that they cannot resize the sections
         self.treeView_seasons.header().setSectionResizeMode(0, qtw.QHeaderView.ResizeMode.Fixed)
         self.treeView_seasons.header().setSectionResizeMode(1, qtw.QHeaderView.ResizeMode.Fixed)
+        self.treeView_seasons.header().setSectionResizeMode(2, qtw.QHeaderView.ResizeMode.Fixed)
 
     #=======#
     #FILTERS#
