@@ -117,7 +117,7 @@ class GlobalSettings(Settings):
         self.set_setting("accounts", accounts)
 
 class InstanceSettings(Settings):
-    def __init__(self, settings_path: str, *, instance_name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None, instance_directory: Optional[str] = None, siege_directory: Optional[str] = None):
+    def __init__(self, settings_path: str, *, instance_name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None):
         self.SETTINGS_PATH = settings_path
 
         if not os.path.isfile(self.SETTINGS_PATH): #if the file doesn't exist, it should mean that we have a new instance that we want to initialise with settings.
@@ -125,20 +125,16 @@ class InstanceSettings(Settings):
                 instance_name=instance_name,
                 username=username,
                 version=version,
-                instance_directory=instance_directory,
-                siege_directory=siege_directory
             )
         else:#the file exists, so we should load data from the file
             self.load_from_file()
 
-    def create_settings(self, *, instance_name: str, username: str, version: str , instance_directory: str, siege_directory: str) -> None:
+    def create_settings(self, *, instance_name: str, username: str, version: str) -> None:
         try:
             self.settings = InstanceSettingsModel(
                 instance_name=instance_name,
                 username=username,
-                version=version,
-                instance_directory=instance_directory,
-                siege_directory=siege_directory
+                version=version
             )
         except:
             logger.log("Invalid instance settings data.", LogLevel.ERROR)
@@ -205,14 +201,6 @@ class InstanceSettings(Settings):
     @property
     def version(self) -> SiegeVersions:
         return self.get_setting("version")
-
-    @property
-    def instance_directory(self) -> str:
-        return self.get_setting("instance_directory")
-    
-    @property
-    def siege_directory(self) -> str:
-        return self.get_setting("siege_directory")
     
     #==================#
     #INDIVIDUAL SETTERS#
@@ -226,13 +214,7 @@ class InstanceSettings(Settings):
 
     def set_version(self, version: SiegeVersions) -> None:
         self.set_setting("version", version)
-
-    def set_instance_directory(self, instance_directory: str) -> None:
-        self.set_setting("instance_directory", instance_directory)
-
-    def set_siege_directory(self, siege_directory: str) -> None:
-        self.set_setting("siege_directory", siege_directory)
-
+        
 #explicitly declare the outwards facing API of this module
 __all__ = [
     "GlobalSettings",

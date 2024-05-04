@@ -47,15 +47,6 @@ class InstanceSettingsModel(BaseModel):
     instance_name: str 
     username: str
     version: SiegeVersions
-    instance_directory: str
-    siege_directory: str
-
-    @field_validator('instance_directory', 'siege_directory')
-    @classmethod
-    def check_folder(cls, v: str, info: ValidationInfo) -> str:
-        if not os.path.isdir(v):
-            raise ValueError(f'The path for {info.field_name} must lead to an existing directory.')
-        return v
     
     @field_serializer('version', when_used='json')
     def convert_version_to_str(version: SiegeVersions) -> str:
