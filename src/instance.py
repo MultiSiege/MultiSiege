@@ -1,8 +1,11 @@
 from settings import *
 from constants import *
 from typing import Optional
+from steamctl.commands.depot.gcmds import cmd_depot_download
 import os
 import logger
+import subprocess
+import shutil
 
 class Instance:
     def __init__(self, instance_directory: str, load_from_file: bool, *, instance_name: Optional[str] = None, username: Optional[str] = None, version: Optional[SiegeVersions] = None) -> None:
@@ -47,5 +50,12 @@ class Instance:
         pass
 
     def delete(self) -> None:
+        try:
+            shutil.rmtree(self.INSTANCE_DIRECTORY)
+            logger.log(f"Removed instance {self.settings.instance_name}", LogLevel.INFO)
+        except:
+            logger.log(f"Failed to remove instance {self.settings.instance_name}", LogLevel.ERROR)
+            raise ValueError(f"Failed to remove instance {self.settings.instance_name}")
+    
+    def dump_codex(self) -> None:
         pass
-
