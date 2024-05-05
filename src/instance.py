@@ -57,7 +57,7 @@ class Instance:
                 
     def launch(self) -> None:
         """
-        Attempts to launch the instance through RainbowSix.exe.
+        Attempts to launch the instance through `RainbowSix.exe`.
         """
         self.launched = True
 
@@ -76,12 +76,12 @@ class Instance:
             self.console.log(f"Siege process successfully finished", LogLevel.INFO)
 
         self.launched = False
-        
+
     def kill(self) -> None:
         """
         Kills the siege process if it is running.
 
-        WARNING: Should only be used if the process is not communicating properly.
+        `WARNING`: Should only be used if the process is not communicating properly.
         """
         if not self.launched: return logger.log("Attempted to kill instance process that is not currently running.", LogLevel.WARNING)
 
@@ -92,9 +92,10 @@ class Instance:
 
     def download(self, username: str, password: str) -> None:
         """
-        Downloads the instance of siege using steam depots and steamctl.
+        Downloads the instance of siege using `steamctl`.
+        Automatically applies the right crack for the respective season.
 
-        Logs the complete download process to the console.
+        Should only be used once when an instance is created, any other time use the `verify` method.
         """
 
     def create_shortcut(self, shortcut_path: str) -> None:
@@ -115,4 +116,6 @@ class Instance:
             raise ValueError(f"Failed to remove instance {self.settings.instance_name}")
     
     def dump_codex(self) -> None:
-        pass
+        """
+        Dumps the relevant `GAMENAME` and `USERNAME` onto the `CODEX.ini` crack file.
+        """
