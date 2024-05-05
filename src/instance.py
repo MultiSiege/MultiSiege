@@ -72,7 +72,11 @@ class Instance:
 
         if self.siege_process.returncode != 0:
             self.console.log(f"Siege process returned with error code {self.siege_process.returncode}. Check you have verified files correctly.", LogLevel.ERROR)
-            self.launched = False
+        else:
+            self.console.log(f"Siege process successfully finished", LogLevel.INFO)
+
+        self.launched = False
+        
     def kill(self) -> None:
         """
         Kills the siege process if it is running.
@@ -112,10 +116,3 @@ class Instance:
     
     def dump_codex(self) -> None:
         pass
-
-instance = Instance("instances/my_instance", False,
-                    instance_name="Yes",
-                    username="better",
-                    version=SiegeVersions.VANILLA)
-
-instance.kill()
