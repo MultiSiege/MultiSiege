@@ -97,6 +97,12 @@ class Instance:
 
         Should only be used once when an instance is created, any other time use the `verify` method.
         """
+        depot = SiegeDepots[self.settings.version.name]
+
+        try:
+            downloader_process = subprocess.run(["steamctl", "depot", "download", ])
+        except:
+            print("ez")
 
     def create_shortcut(self, shortcut_path: str) -> None:
         pass
@@ -119,3 +125,9 @@ class Instance:
         """
         Dumps the relevant `GAMENAME` and `USERNAME` onto the `CODEX.ini` crack file.
         """
+        try:
+            with open(os.path.join(self.SIEGE_DIRECTORY, "CODEX.ini"), "r+") as f:
+                pass
+
+        except:
+            self.console.log("Could not modify CODEX.ini crack file.")
