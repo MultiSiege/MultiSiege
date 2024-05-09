@@ -2,9 +2,15 @@ from settings import *
 from constants import *
 import logger
 import os
-from PySide6 import QtCore as qtc
+import sys
+from PySide6 import (
+    QtCore as qtc,
+    QtWidgets as qtw,
+    QtGui as qtg
+)
 from typing import Dict
 from instance import Instance
+from widgets import *
 
 class MultiSiege(qtc.QObject):
     def __init__(self) -> None:
@@ -12,6 +18,7 @@ class MultiSiege(qtc.QObject):
         self.instances: Dict[str, Instance] = {}
 
         self.setup_instances()
+        self.setup_ui()
 
     #=============#
     #SETUP METHODS#
@@ -28,7 +35,17 @@ class MultiSiege(qtc.QObject):
             else:
                 self.instances[os.path.basename(folder)] = Instance(folder, True)
 
-        
-        
+    def setup_ui(self) -> None:
+        """
+        Initialises `PySide6` UI elements with the `MainWindow`. All other widgets are composed in `MainWindow`.
+        """
+        self.ui = MainWindow()
+        self.ui.show()
 
+if __name__ == "__main__":
+    app = qtw.QApplication(sys.argv)
+
+    multi_siege = MultiSiege()
+
+    sys.exit(app.exec())
 
