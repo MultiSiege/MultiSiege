@@ -32,7 +32,7 @@ class Instance:
         if not os.path.isdir(self.INSTANCE_DIRECTORY): os.mkdir(self.INSTANCE_DIRECTORY)
         if not os.path.isdir(self.SIEGE_DIRECTORY): os.mkdir(self.SIEGE_DIRECTORY)
 
-        self.launched = False
+        self.siege_process: subprocess.Popen[bytes] | None = None
 
         if load_from_file:
             try:
@@ -60,13 +60,11 @@ class Instance:
         """
         Attempts to launch the instance through `RainbowSix.exe`.
         """
-        self.launched = True
-
         try:
             self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
             self.console.log("Could not find RainbowSix.exe, try verifying files to recover lost data.", LogLevel.ERROR)
-            self.launched = False
+            self.siege_process = None
             return
 
         out, err = self.siege_process.communicate()
@@ -76,7 +74,7 @@ class Instance:
         else:
             self.console.log(f"Siege process successfully finished", LogLevel.INFO)
 
-        self.launched = False
+        self.siege_process = None
 
     def kill(self) -> None:
         """
@@ -84,10 +82,10 @@ class Instance:
 
         `WARNING`: Should only be used if the process is not communicating properly.
         """
-        if not self.launched: return logger.log("Attempted to kill instance process that is not currently running.", LogLevel.WARNING)
+        if self.siege_process is None: return logger.log("Attempted to kill instance process that is not currently running.", LogLevel.WARNING)
 
         self.siege_process.kill()
-        self.launched = False
+        self.siege_process = None
 
         self.console.log("Killed siege process that is currently running.", LogLevel.WARNING)
 
