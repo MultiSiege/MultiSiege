@@ -1,7 +1,6 @@
 from settings import *
 from constants import *
 from typing import Optional
-from steamctl.commands.depot.gcmds import cmd_depot_download
 import os
 import logger
 import subprocess
