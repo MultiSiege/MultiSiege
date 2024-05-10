@@ -103,25 +103,27 @@ class Instance:
         except:
             print("ez")
 
-    def create_shortcut(self, name: str, target_path: str) -> None:
+    def create_shortcut(self, name: str, shortcut_path: str) -> None:
         """
-        Creates a shortcut for the `target_path` with the `name` specified.
+        Creates a shortcut for the RainbowSix.exe file with the `name` specified.
 
-        Shortcuts are saved to the Desktop.
+        Shortcuts are saved to `shortcut_path`.
         """
+        siege_exe_path = os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe")
+        if not os.path.isfile(siege_exe_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.exe", LogLevel.WARNING)
+
         with tempfile.TemporaryDirectory() as tmpdir:
             bat_file= os.path.join(tmpdir, "CreateShortcut.vbs")
-            desktop_loc = os.path.expanduser("~\Desktop")
-            name_path = os.path.join(desktop_loc,"{}.lnk").format(name.upper())
+            name_path = os.path.join(shortcut_path,f"{name.upper()}.lnk")
             with open(bat_file, "w") as fout:
-                fout.write(SCIPTFILE.format(name=name_path, targetpath=target_path))
+                fout.write(SCIPTFILE.format(name=name_path, targetpath=siege_exe_path))
             try:
                 subprocess.call(["cscript", bat_file], cwd=tmpdir)
             except Exception as ex:
-                logger.log("Error creating shoutcut", LogLevel.ERROR)
-                logger.log(ex, LogLevel.ERROR)
+                self.console.log("Error creating shoutcut", LogLevel.ERROR)
+                self.console.log(ex, LogLevel.ERROR)
  
-            logger.log("Shortcut link created, check {}".format(desktop_loc), LogLevel.INFO)
+            self.console.log(f"Shortcut link created, check {shortcut_path}", LogLevel.INFO)
 
     def export_instance(self) -> None:
         pass
