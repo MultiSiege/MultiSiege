@@ -50,6 +50,15 @@ class SiegeVersions(enum.Enum, metaclass=MyEnumMeta):
     HIGH_CALIBRE = "Y6S4"
 
 class SiegeDepots(enum.IntEnum):
+    """
+    Lists of siege depots we need to download content from Steam.
+    
+    SKU_RUS is used for the localisation of ex - Soviet countries.
+    """
+    CONTENT = 359551
+    SKU_RUS = 377238
+
+class SiegeManifests(enum.IntEnum):
     pass
 
 class Status(enum.Enum):
