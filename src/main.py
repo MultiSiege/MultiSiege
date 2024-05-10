@@ -28,6 +28,8 @@ class MultiSiege(qtc.QObject):
         """
         Iterates through the set instances folder specified in `global_settings.json` and adds it as an `Instance` object to the dictionary for fast lookup.
         """
+        if not os.path.isdir(self.global_settings.features.instances_folder): os.mkdir(self.global_settings.features.instances_folder)
+
         for folder in os.listdir(self.global_settings.features.instances_folder):
             if not os.path.isdir(folder):
                 os.remove(folder)
