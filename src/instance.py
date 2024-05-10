@@ -120,10 +120,10 @@ class Instance:
             try:
                 subprocess.call(["cscript", bat_file], cwd=tmpdir)
             except Exception as ex:
-                print("Error creating shoutcut")
-                print(ex)
+                logger.log("Error creating shoutcut", LogLevel.ERROR)
+                logger.log(ex, LogLevel.ERROR)
  
-            print("Shortcut link created, check {}".format(desktop_loc))
+            logger.log("Shortcut link created, check {}".format(desktop_loc), LogLevel.INFO)
 
     def export_instance(self) -> None:
         pass
