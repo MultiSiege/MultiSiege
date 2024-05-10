@@ -2,6 +2,14 @@ import enum
 
 GLOBAL_SETTINGS = './global_settings.json'
 
+SCIPTFILE="""
+Set oWS = WScript.CreateObject("WScript.Shell") 
+sLinkFile = "{name}"
+Set oLink = oWS.CreateShortcut(sLinkFile)
+oLink.TargetPath = "{targetpath}"
+oLink.Save
+"""
+
 class MyEnumMeta(enum.EnumMeta): 
     def __contains__(cls, item): 
         try:

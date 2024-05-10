@@ -6,6 +6,7 @@ import os
 import logger
 import subprocess
 import shutil
+import tempfile
 
 class Console:
     def __init__(self) -> None:
@@ -104,8 +105,25 @@ class Instance:
         except:
             print("ez")
 
-    def create_shortcut(self, shortcut_path: str) -> None:
-        pass
+    def create_shortcut(self, name: str, target_path: str) -> None:
+        """
+        Creates a shortcut for the `target_path` with the `name` specified.
+
+        Shortcuts are saved to the Desktop.
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            bat_file= os.path.join(tmpdir, "CreateShortcut.vbs")
+            desktop_loc = os.path.expanduser("~\Desktop")
+            name_path = os.path.join(desktop_loc,"{}.lnk").format(name.upper())
+            with open(bat_file, "w") as fout:
+                fout.write(SCIPTFILE.format(name=name_path, targetpath=target_path))
+            try:
+                subprocess.call(["cscript", bat_file], cwd=tmpdir)
+            except Exception as ex:
+                print("Error creating shoutcut")
+                print(ex)
+ 
+            print("Shortcut link created, check {}".format(desktop_loc))
 
     def export_instance(self) -> None:
         pass
