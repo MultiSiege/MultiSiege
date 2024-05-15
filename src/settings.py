@@ -56,7 +56,8 @@ class GlobalSettings(Settings):
             try:
                 data = json.load(f)
                 self.settings = GlobalSettingsModel(**data)
-            except:
+            except Exception as e:
+                print(e)
                 logger.log("Could not load settings (corrupt file)", LogLevel.WARNING)
 
                 self.settings = GlobalSettingsModel()
@@ -75,12 +76,11 @@ class GlobalSettings(Settings):
             
     def set_setting(self, field_name: str, value: Any) -> None:
         """
-        Attempts to set a setting in the pydantic model and JSON file.
+        Attempts to set a setting in the pydantic model.
         """
         try:
             self.settings.__setattr__(name=field_name, value=value)
-            self.settings = GlobalSettingsModel(**self.settings.model_dump_json()) #needs to remake the model to go through the field validators
-            self.dump_settings()
+            self.settings = GlobalSettingsModel(**self.settings.model_dump()) #needs to remake the model to go through the field validators
         except:
             logger.log("Could not update setting (invalid field)", LogLevel.ERROR)
 
@@ -167,12 +167,11 @@ class InstanceSettings(Settings):
             
     def set_setting(self, field_name: str, value: Any) -> None:
         """
-        Attempts to set a setting in the pydantic model and JSON file.
+        Attempts to set a setting in the pydantic model.
         """
         try:
             self.settings.__setattr__(name=field_name, value=value)
-            self.settings = InstanceSettingsModel(**self.settings.model_dump_json()) #need to remake the model to go through the field validators 
-            self.dump_settings()
+            self.settings = InstanceSettingsModel(**self.settings.model_dump()) #need to remake the model to go through the field validators 
         except:
             logger.log("Could not update setting (invalid field)", LogLevel.ERROR)
 

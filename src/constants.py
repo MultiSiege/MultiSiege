@@ -81,5 +81,6 @@ class Mode(enum.Enum, metaclass=MyEnumMeta):
     """
     Enum for the mode the program is in (light or dark mode)
     """
+    USE_SYSTEM_SETTING = "USE_SYSTEM_SETTING"
     LIGHT = "LIGHT"
     DARK = "DARK"

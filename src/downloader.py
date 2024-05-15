@@ -9,4 +9,3 @@ class Downloader:
         """
         Spawns a new downloader instance, which comes bundled with the UI.
         """
-        
