@@ -25,6 +25,8 @@ class MultiSiege:
         self.ui.global_settings_dialog.get_settings.connect(self.get_global_settings)
         self.ui.global_settings_dialog.set_settings.connect(self.set_global_settings)
 
+        self.ui.new_instance_dialog.accepted.connect(self.add_instance)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -36,6 +38,7 @@ class MultiSiege:
         if not os.path.isdir(self.global_settings.features.instances_folder): os.mkdir(self.global_settings.features.instances_folder)
 
         for folder in os.listdir(self.global_settings.features.instances_folder):
+            folder = os.path.join(self.global_settings.features.instances_folder, folder)
             if not os.path.isdir(folder):
                 os.remove(folder)
                 logger.log("File found in top level directory of instances folder, deleting file.", LogLevel.WARNING)
@@ -67,6 +70,22 @@ class MultiSiege:
         """
         self.global_settings = self.ui.global_settings_dialog.settings
         self.global_settings.dump_settings()
+
+    @qtc.Slot()
+    def add_instance(self) -> None:
+        """
+        Dumps relevant metadata and adds a new `Instance` object to the dictionary for fast lookup.
+        """
+        instance_name, username, version = self.ui.new_instance_dialog.dump_metadata()
+
+        instance_directory = os.path.join(self.global_settings.features.instances_folder, instance_name)
+
+        self.instances[instance_name] = Instance(instance_directory, 
+                                                 False, 
+                                                 instance_name=instance_name,
+                                                 username=username,
+                                                 version=version)
+
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)

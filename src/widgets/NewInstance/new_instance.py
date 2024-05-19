@@ -114,7 +114,6 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.filter_year6.clicked.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
 
         self.treeView_seasons.selectionModel().currentRowChanged.connect(self.set_placeholder_text)
-        self.accepted.connect(self.handle_accepted_dialog)
 
         #making sure that they cannot resize the sections
         self.treeView_seasons.header().setSectionResizeMode(0, qtw.QHeaderView.ResizeMode.Fixed)
@@ -143,9 +142,29 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
     #CREATING NEW INSTANCE
     #====================#
 
-    @qtc.Slot()
-    def handle_accepted_dialog(self) -> None:
-        pass
+    def dump_metadata(self) -> tuple[str, str, SiegeVersions]:
+        #dump instance name and username
+
+        if len(self.lineEdit_instance_name.text()) == 0:
+            instance_name = self.lineEdit_instance_name.placeholderText()
+        else:
+            instance_name = self.lineEdit_instance_name.text()
+
+        if len(self.lineEdit_username.text()) == 0:
+            username = self.lineEdit_username.placeholderText()
+        else:
+            username = self.lineEdit_username.text()
+
+        tree_view_current_row = self.treeView_seasons.currentIndex().row()
+        index = self.treeView_seasons.model().index(tree_view_current_row, 0)
+
+        data: str = self.treeView_seasons.model().itemData(index)[0]
+        data = data.replace(" ", "_")
+        data = data.upper()
+
+        version = SiegeVersions[data]
+
+        return instance_name, username, version
 
     #=============#
     #MISCELLANEOUS#
@@ -169,4 +188,3 @@ if __name__ == "__main__":
     window.show()
 
     sys.exit(app.exec())
-    
