@@ -9,9 +9,6 @@ from Main.UI.main_window import Ui_MainWindow
 from NewInstance.new_instance import NewInstance
 from GlobalSettings.global_settings import GlobalSettingsWindow
 
-sys.path.append('src')
-from settings import GlobalSettings
-
 class MainWindow(qtw.QWidget, Ui_MainWindow):
     def __init__(self):
         super().__init__()
