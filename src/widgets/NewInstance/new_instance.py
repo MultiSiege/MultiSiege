@@ -80,8 +80,8 @@ class YearFilterModel(qtc.QSortFilterProxyModel):
         return self.dump_regex()
     
 class NewInstance(qtw.QDialog, Ui_NewInstance):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent: qtc.QObject | None = None):
+        super().__init__(parent)
         self.setupUi(self)
 
         #setting up the layered model for filtering

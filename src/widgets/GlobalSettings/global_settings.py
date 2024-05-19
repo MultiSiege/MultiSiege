@@ -4,11 +4,20 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
+sys.path.append('src/widgets')
 from GlobalSettings.UI.global_settings_window import Ui_dialog_global_settings
+from GlobalSettings.UI.add_steam_account_window import Ui_dialog_add_steam_account
 
 sys.path.append('src')
 from models import *
 from settings import *
+
+class AddSteamAccountWindow(Ui_dialog_add_steam_account, qtw.QDialog):
+    account_created = qtc.Signal(arguments=["account_name", "password"])
+    def __init__(self) -> None:
+        self.account_created.emit()
+        self.accepted.connect(self.process_steam_account)
+
 
 class AccountsModel(qtg.QStandardItemModel):
     def __init__(self, accounts: list[AccountModel]) -> None:
@@ -38,21 +47,18 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
 
     Once the user has pressed `OK`, it will emit a callback signal with the new `GlobalSettings` object.
     """
-    def __init__(self, settings: GlobalSettings, index: int) -> None:
-        super().__init__()
-        self.setupUi(self)
+    get_settings = qtc.Signal()
+    set_settings = qtc.Signal()
 
-        self.settings = settings
+    def __init__(self, parent: qtc.QObject | None = None) -> None:
+        super().__init__(parent)
+        self.setupUi(self)
 
         self.dialog = qtw.QFileDialog(self)
         self.dialog.setFileMode(qtw.QFileDialog.FileMode.Directory)
 
-        self.setup_features()
-        self.setup_accounts()
-
-        #make sure the current index in the list is always selected as the inputted item
-        self.stackedWidget.setCurrentIndex(index)
-        self.listwidget_page_selector.setCurrentRow(index)
+        #set the settings as None for now for better type hinting
+        self.settings: GlobalSettings | None = None
 
         #slot handling
         self.listwidget_page_selector.itemPressed.connect(self.set_page)
@@ -63,20 +69,19 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
         self.pb_instances_file_dialog.clicked.connect(lambda: self.handle_folder_dialog("Instances Folder", self.le_instances))
         self.pb_mods_file_dialog.clicked.connect(lambda: self.handle_folder_dialog("Mods Folder", self.le_mods))
 
+        self.accepted.connect(self.handle_accepted_dialog)
+
     #=============#
     #SETUP METHODS#
     #=============#
 
     def setup_features(self) -> None:
         #check for update on start
-        if self.settings.features.check_for_update_on_start:
-            self.cb_update_on_start.setChecked(True)
-        else:
-            self.cb_update_on_start.setChecked(False)
+        self.cb_update_on_start.setChecked(self.settings.features.check_for_update_on_start)
 
         #folders
-        self.le_instances.setText(os.path.relpath(self.settings.features.instances_folder))
-        self.le_mods.setText(os.path.relpath(self.settings.features.mods_folder))
+        self.le_instances.setText(self.format_folder_path(self.settings.features.instances_folder))
+        self.le_mods.setText(self.format_folder_path(self.settings.features.mods_folder))
 
         #mode
         if self.settings.features.mode == Mode.USE_SYSTEM_SETTING: self.cb_mode.setCurrentIndex(0)
@@ -111,11 +116,8 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
             self.dialog.setDirectory(os.getcwd())
 
         if self.dialog.exec():
-            folder = os.path.relpath(self.dialog.selectedFiles()[0])
-            if folder.startswith('.'):
-                line_edit.setText(os.path.abspath(folder))
-            else:
-                line_edit.setText(folder)
+            folder = self.dialog.selectedFiles()[0]
+            line_edit.setText(self.format_folder_path(folder))
 
     @qtc.Slot()
     def set_remove_enabled(self) -> None:
@@ -128,12 +130,57 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
     def remove_selected_account(self) -> None:
         if self.treeView.currentIndex().row() != -1:
             self.treeView.model().removeRow(self.treeView.selectedIndexes()[0].row())
+            if self.treeView.currentIndex().row() == -1: self.pb_remove_account.setEnabled(False)
+
+    @qtc.Slot()
+    def handle_accepted_dialog(self) -> None:
+        #dump features
+        if self.cb_mode.currentIndex() == 0: mode = Mode.USE_SYSTEM_SETTING
+        elif self.cb_mode.currentIndex() == 1: mode = Mode.LIGHT
+        elif self.cb_mode.currentIndex() == 2: mode = Mode.DARK
+
+        features = FeaturesModel(
+            mode=mode,
+            instances_folder=self.le_instances.text(),
+            mods_folder=self.le_mods.text(),
+            check_for_update_on_start=self.cb_update_on_start.isChecked()
+        )
+
+        #accounts are already dumped as we cannot get password info from the UI
+
+        self.settings.set_features(features)
+        self.set_settings.emit()
+
+    #=============#
+    #MISCELLANEOUS#
+    #=============#
+
+    def format_folder_path(self, path: str) -> str:
+        rel_path = os.path.relpath(path)
+        if rel_path.startswith('.'):
+            return os.path.abspath(rel_path)
+        else:
+            return rel_path
+        
+    def exec(self, index: int) -> int:
+        """
+        Overrides the `QDialog` exec method so we can set the current page to the inputted item and so we can request the `GlobalSettings` object.
+        """
+        self.get_settings.emit()
+
+        self.setup_features()
+        self.setup_accounts()
+
+        self.stackedWidget.setCurrentIndex(index)
+        self.listwidget_page_selector.setCurrentRow(index)
+
+        return super().exec()
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
 
     global_settings = GlobalSettings()
-    global_settings.set_accounts([AccountModel(username="heeheeheehaw", password="no", region="UK")])
+    global_settings.set_accounts([AccountModel(username="heeheeheehaw", password="no", region="UK"), AccountModel(username="no", password="yes", region="UK")])
     global_settings.dump_settings()
 
     window = GlobalSettingsWindow(global_settings, 1)

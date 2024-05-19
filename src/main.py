@@ -9,6 +9,7 @@ from PySide6 import (
     QtGui as qtg
 )
 from typing import Dict
+from copy import deepcopy
 from instance import Instance
 from widgets import *
 
@@ -19,6 +20,10 @@ class MultiSiege(qtc.QObject):
 
         self.setup_instances()
         self.setup_ui()
+
+        #slot handling
+        self.ui.global_settings_dialog.get_settings.connect(self.get_global_settings)
+        self.ui.global_settings_dialog.set_settings.connect(self.set_global_settings)
 
     #=============#
     #SETUP METHODS#
@@ -43,6 +48,19 @@ class MultiSiege(qtc.QObject):
         """
         self.ui = MainWindow()
         self.ui.show()
+
+    #=====#
+    #SLOTS#
+    #=====#
+    @qtc.Slot()
+    def get_global_settings(self) -> None:
+        #need to make a deepcopy otherwise will point to the same reference in memory, making it not an isolated sandbox
+        self.ui.global_settings_dialog.settings = deepcopy(self.global_settings)
+
+    @qtc.Slot()
+    def set_global_settings(self) -> None:
+        self.global_settings = self.ui.global_settings_dialog.settings
+        self.global_settings.dump_settings()
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
