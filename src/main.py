@@ -80,6 +80,12 @@ class MultiSiege:
 
         instance_directory = os.path.join(self.global_settings.features.instances_folder, instance_name)
 
+        #if we have clashing folder names keep on adding numbers until we have a unique folder name that won't override the old instance
+        count = 1
+        while os.path.isdir(instance_directory):
+            instance_directory = os.path.join(self.global_settings.features.instances_folder, instance_name + str(count))
+            count += 1
+
         self.instances[instance_name] = Instance(instance_directory, 
                                                  False, 
                                                  instance_name=instance_name,
