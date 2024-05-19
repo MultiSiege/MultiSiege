@@ -16,7 +16,7 @@ from widgets import *
 class MultiSiege:
     def __init__(self) -> None:
         self.global_settings = GlobalSettings()
-        self.instances: Dict[str, Instance] = {}
+        self.instances: list[Instance] = []
 
         self.setup_instances()
         self.setup_ui()
@@ -43,7 +43,7 @@ class MultiSiege:
                 os.remove(folder)
                 logger.log("File found in top level directory of instances folder, deleting file.", LogLevel.WARNING)
             else:
-                self.instances[os.path.basename(folder)] = Instance(folder, True)
+                self.instances.append(Instance(folder, True))
 
     def setup_ui(self) -> None:
         """
@@ -74,7 +74,7 @@ class MultiSiege:
     @qtc.Slot()
     def add_instance(self) -> None:
         """
-        Dumps relevant metadata and adds a new `Instance` object to the dictionary for fast lookup.
+        Dumps relevant metadata and adds a new `Instance` object to the list.
         """
         instance_name, username, version = self.ui.new_instance_dialog.dump_metadata()
 
@@ -86,11 +86,13 @@ class MultiSiege:
             instance_directory = os.path.join(self.global_settings.features.instances_folder, instance_name + str(count))
             count += 1
 
-        self.instances[instance_name] = Instance(instance_directory, 
+        new_instance = Instance(instance_directory, 
                                                  False, 
                                                  instance_name=instance_name,
                                                  username=username,
                                                  version=version)
+        
+        self.instances.append(new_instance)
 
 
 if __name__ == "__main__":
