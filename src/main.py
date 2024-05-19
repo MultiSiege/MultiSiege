@@ -13,7 +13,7 @@ from copy import deepcopy
 from instance import Instance
 from widgets import *
 
-class MultiSiege(qtc.QObject):
+class MultiSiege:
     def __init__(self) -> None:
         self.global_settings = GlobalSettings()
         self.instances: Dict[str, Instance] = {}
@@ -54,11 +54,17 @@ class MultiSiege(qtc.QObject):
     #=====#
     @qtc.Slot()
     def get_global_settings(self) -> None:
+        """
+        Sets the global settings object as an attribute of our global settings dialog.
+        """
         #need to make a deepcopy otherwise will point to the same reference in memory, making it not an isolated sandbox
         self.ui.global_settings_dialog.settings = deepcopy(self.global_settings)
 
     @qtc.Slot()
     def set_global_settings(self) -> None:
+        """
+        Override the global_settings object with the one from our global settings dialog if the user has accepted the changes.
+        """
         self.global_settings = self.ui.global_settings_dialog.settings
         self.global_settings.dump_settings()
 
