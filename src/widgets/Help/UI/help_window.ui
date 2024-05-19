@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>about_and_help_dialog</class>
+ <widget class="QDialog" name="about_and_help_dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>525</width>
+    <height>543</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>525</width>
+    <height>543</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>About MultiSiege</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../../../assets/main_window/icons.qrc">
+    <normaloff>:/top_nav_bar/Blue_Question_Mark_clip_art.svg</normaloff>:/top_nav_bar/Blue_Question_Mark_clip_art.svg</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="3" column="1">
+    <widget class="QPushButton" name="pb_close">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="about">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>MultiSiege is an all in one, clean and efficient launcher and downloader for handling multiple isolated versions of Rainbow Six Siege, heavily inspired by MultiMC.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="link_multisiege_github">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/MultiSiege/MultiSiege&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#55aaff;&quot;&gt;MultiSiege GitHub&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Help</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="link_guides_and_faqs">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://gitbook-throwback.gitbook.io/r6-operation-throwback-help-page&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#55aaff;&quot;&gt;Guides and FAQs&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="link_discord_server">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://discord.gg/JGA9WPF4K8&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#55aaff;&quot;&gt;R6 Throwback Discord Server&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="link_website">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://r6downloads.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#55aaff;&quot;&gt;R6 Downloads&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::RichText</enum>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../../../assets/main_window/icons.qrc">:/help_logo/logo_help.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_multisiege">
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;MultiSiege&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::RichText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../../../../assets/main_window/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>
