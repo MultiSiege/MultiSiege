@@ -80,6 +80,7 @@ class YearFilterModel(qtc.QSortFilterProxyModel):
         return self.dump_regex()
     
 class NewInstance(qtw.QDialog, Ui_NewInstance):
+    dialog_accepted = qtc.Signal([""])
     def __init__(self, parent: qtc.QObject | None = None):
         super().__init__(parent)
         self.setupUi(self)
@@ -94,6 +95,15 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.proxy_model.setSourceModel(self.year_model)
         self.treeView_seasons.setModel(self.proxy_model)
 
+        old_index = self.treeView_seasons.selectionModel().currentIndex()
+
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 0), qtc.QItemSelectionModel.SelectionFlag.Select)
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 1), qtc.QItemSelectionModel.SelectionFlag.Select)
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 2), qtc.QItemSelectionModel.SelectionFlag.Select)
+
+        self.lineEdit_instance_name.setPlaceholderText("Vanilla")
+        self.lineEdit_username.setPlaceholderText("CHANGE_NAME")
+
         #handling signals and calling slots
         self.filter_liberator.clicked.connect(self.apply_liberator_filter)
         self.filter_year1.clicked.connect(lambda: self.apply_year_filter(self.filter_year1, 1))
@@ -102,6 +112,9 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.filter_year4.clicked.connect(lambda: self.apply_year_filter(self.filter_year4, 4))
         self.filter_year5.clicked.connect(lambda: self.apply_year_filter(self.filter_year5, 5))
         self.filter_year6.clicked.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
+
+        self.treeView_seasons.selectionModel().currentRowChanged.connect(self.set_placeholder_text)
+        self.accepted.connect(self.handle_accepted_dialog)
 
         #making sure that they cannot resize the sections
         self.treeView_seasons.header().setSectionResizeMode(0, qtw.QHeaderView.ResizeMode.Fixed)
@@ -129,7 +142,25 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
     #====================#
     #CREATING NEW INSTANCE
     #====================#
-        
+
+    @qtc.Slot()
+    def handle_accepted_dialog(self) -> None:
+        pass
+
+    #=============#
+    #MISCELLANEOUS#
+    #=============#
+
+    @qtc.Slot()
+    def set_placeholder_text(self, new_index: qtc.QModelIndex, old_index: qtc.QModelIndex) -> None:
+        """
+        Sets placeholder text for the instance name if the user provides no name.
+        """
+        current_row = self.treeView_seasons.currentIndex().row()
+        name_index = self.treeView_seasons.model().index(current_row, 0)
+
+        text = self.treeView_seasons.model().itemData(name_index)[0]
+        self.lineEdit_instance_name.setPlaceholderText(text)
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
