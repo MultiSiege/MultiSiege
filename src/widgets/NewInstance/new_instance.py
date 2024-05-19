@@ -95,15 +95,6 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.proxy_model.setSourceModel(self.year_model)
         self.treeView_seasons.setModel(self.proxy_model)
 
-        old_index = self.treeView_seasons.selectionModel().currentIndex()
-
-        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 0), qtc.QItemSelectionModel.SelectionFlag.Select)
-        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 1), qtc.QItemSelectionModel.SelectionFlag.Select)
-        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 2), qtc.QItemSelectionModel.SelectionFlag.Select)
-
-        self.lineEdit_instance_name.setPlaceholderText("Vanilla")
-        self.lineEdit_username.setPlaceholderText("CHANGE_NAME")
-
         #handling signals and calling slots
         self.filter_liberator.clicked.connect(self.apply_liberator_filter)
         self.filter_year1.clicked.connect(lambda: self.apply_year_filter(self.filter_year1, 1))
@@ -180,6 +171,19 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
 
         text = self.treeView_seasons.model().itemData(name_index)[0]
         self.lineEdit_instance_name.setPlaceholderText(text)
+
+    def exec(self) -> int:
+        """
+        Overrides the `QDialog` exec method to set defaults when you open the window.
+        """
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 0), qtc.QItemSelectionModel.SelectionFlag.ClearAndSelect)
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 1), qtc.QItemSelectionModel.SelectionFlag.Select)
+        self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 2), qtc.QItemSelectionModel.SelectionFlag.Select)
+
+        self.lineEdit_instance_name.setPlaceholderText("Vanilla")
+        self.lineEdit_username.setPlaceholderText("CHANGE_NAME")
+
+        return super().exec()
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
