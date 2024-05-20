@@ -96,13 +96,13 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.treeView_seasons.setModel(self.proxy_model)
 
         #handling signals and calling slots
-        self.filter_liberator.clicked.connect(self.apply_liberator_filter)
-        self.filter_year1.clicked.connect(lambda: self.apply_year_filter(self.filter_year1, 1))
-        self.filter_year2.clicked.connect(lambda: self.apply_year_filter(self.filter_year2, 2))
-        self.filter_year3.clicked.connect(lambda: self.apply_year_filter(self.filter_year3, 3))
-        self.filter_year4.clicked.connect(lambda: self.apply_year_filter(self.filter_year4, 4))
-        self.filter_year5.clicked.connect(lambda: self.apply_year_filter(self.filter_year5, 5))
-        self.filter_year6.clicked.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
+        self.filter_liberator.checkStateChanged.connect(self.apply_liberator_filter)
+        self.filter_year1.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year1, 1))
+        self.filter_year2.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year2, 2))
+        self.filter_year3.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year3, 3))
+        self.filter_year4.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year4, 4))
+        self.filter_year5.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year5, 5))
+        self.filter_year6.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
 
         self.treeView_seasons.selectionModel().currentRowChanged.connect(self.set_placeholder_text)
 
@@ -176,12 +176,26 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         """
         Overrides the `QDialog` exec method to set defaults when you open the window.
         """
+        self.lineEdit_instance_name.setPlaceholderText("Vanilla")
+        self.lineEdit_username.setPlaceholderText("CHANGE_NAME")
+        self.lineEdit_instance_name.setText("")
+        self.lineEdit_username.setText("")
+
+        self.filter_liberator.setChecked(False)
+        self.filter_year1.setChecked(False)
+        self.filter_year2.setChecked(False)
+        self.filter_year3.setChecked(False)
+        self.filter_year4.setChecked(False)
+        self.filter_year5.setChecked(False)
+        self.filter_year6.setChecked(False)
+        self.filter_year7.setChecked(False)
+
         self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 0), qtc.QItemSelectionModel.SelectionFlag.ClearAndSelect)
         self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 1), qtc.QItemSelectionModel.SelectionFlag.Select)
         self.treeView_seasons.selectionModel().select(self.treeView_seasons.model().index(0, 2), qtc.QItemSelectionModel.SelectionFlag.Select)
 
-        self.lineEdit_instance_name.setPlaceholderText("Vanilla")
-        self.lineEdit_username.setPlaceholderText("CHANGE_NAME")
+        self.treeView_seasons.scrollToTop()
+        self.setFocus()
 
         return super().exec()
 

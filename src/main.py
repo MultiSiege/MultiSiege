@@ -33,7 +33,7 @@ class MultiSiege:
         
     def setup_instances(self):
         """
-        Iterates through the set instances folder specified in `global_settings.json` and adds it as an `Instance` object to the dictionary for fast lookup.
+        Iterates through the set instances folder specified in `global_settings.json` and adds it as an `Instance` object to the list.
         """
         if not os.path.isdir(self.global_settings.features.instances_folder): os.mkdir(self.global_settings.features.instances_folder)
 
@@ -55,6 +55,7 @@ class MultiSiege:
     #=====#
     #SLOTS#
     #=====#
+
     @qtc.Slot()
     def get_global_settings(self) -> None:
         """
@@ -87,10 +88,10 @@ class MultiSiege:
             count += 1
 
         new_instance = Instance(instance_directory, 
-                                                 False, 
-                                                 instance_name=instance_name,
-                                                 username=username,
-                                                 version=version)
+                                False, 
+                                instance_name=instance_name,
+                                username=username,
+                                version=version)
         
         self.instances.append(new_instance)
 
