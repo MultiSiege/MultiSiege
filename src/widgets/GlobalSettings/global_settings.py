@@ -174,6 +174,8 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
         self.stackedWidget.setCurrentIndex(index)
         self.listwidget_page_selector.setCurrentRow(index)
 
+        self.setFocus()
+
         return super().exec()
 
 if __name__ == "__main__":

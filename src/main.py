@@ -18,8 +18,8 @@ class MultiSiege:
         self.global_settings = GlobalSettings()
         self.instances: list[Instance] = []
 
-        self.setup_instances()
         self.setup_ui()
+        self.setup_instances()
 
         #slot handling
         self.ui.global_settings_dialog.get_settings.connect(self.get_global_settings)
@@ -44,6 +44,8 @@ class MultiSiege:
                 logger.log("File found in top level directory of instances folder, deleting file.", LogLevel.WARNING)
             else:
                 self.instances.append(Instance(folder, True))
+
+        self.ui.get_instances.emit(self.instances)
 
     def setup_ui(self) -> None:
         """

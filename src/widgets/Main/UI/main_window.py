@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFormLayout, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QPushButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QPushButton, QScrollArea, QSizePolicy,
     QSpacerItem, QVBoxLayout, QWidget)
 from . import icons
 
@@ -200,32 +200,17 @@ class Ui_MainWindow(object):
         self.frame_instances.setMinimumSize(QSize(0, 0))
         self.frame_instances.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_instances.setFrameShadow(QFrame.Shadow.Raised)
-        self.formLayout = QFormLayout(self.frame_instances)
-        self.formLayout.setObjectName(u"formLayout")
-        self.frame_instance_INSTANCE_NAME = QFrame(self.frame_instances)
-        self.frame_instance_INSTANCE_NAME.setObjectName(u"frame_instance_INSTANCE_NAME")
-        self.frame_instance_INSTANCE_NAME.setMaximumSize(QSize(113, 143))
-        self.frame_instance_INSTANCE_NAME.setCursor(QCursor(Qt.PointingHandCursor))
-        self.frame_instance_INSTANCE_NAME.setFrameShape(QFrame.Shape.Panel)
-        self.frame_instance_INSTANCE_NAME.setFrameShadow(QFrame.Shadow.Plain)
-        self.frame_instance_INSTANCE_NAME.setLineWidth(2)
-        self.verticalLayout_2 = QVBoxLayout(self.frame_instance_INSTANCE_NAME)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label_icon_instance_INSTANCE_NAME = QLabel(self.frame_instance_INSTANCE_NAME)
-        self.label_icon_instance_INSTANCE_NAME.setObjectName(u"label_icon_instance_INSTANCE_NAME")
-        self.label_icon_instance_INSTANCE_NAME.setPixmap(QPixmap(u":/side_nav_bar/rainbow-six-siege-logo-logo-svg-vector.svg"))
-        self.label_icon_instance_INSTANCE_NAME.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.horizontalLayout_2 = QHBoxLayout(self.frame_instances)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.scrollArea = QScrollArea(self.frame_instances)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 478, 443))
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
-        self.verticalLayout_2.addWidget(self.label_icon_instance_INSTANCE_NAME)
-
-        self.label_instance_INSTANCE_NAME = QLabel(self.frame_instance_INSTANCE_NAME)
-        self.label_instance_INSTANCE_NAME.setObjectName(u"label_instance_INSTANCE_NAME")
-        self.label_instance_INSTANCE_NAME.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.verticalLayout_2.addWidget(self.label_instance_INSTANCE_NAME)
-
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.frame_instance_INSTANCE_NAME)
+        self.horizontalLayout_2.addWidget(self.scrollArea)
 
 
         self.gridLayout.addWidget(self.frame_instances, 1, 0, 3, 2)
@@ -252,7 +237,5 @@ class Ui_MainWindow(object):
         self.pb_create_shortcut.setText(QCoreApplication.translate("MainWindow", u"Create Shortcut", None))
         self.pb_export_instance.setText(QCoreApplication.translate("MainWindow", u"Export Instance", None))
         self.pb_delete.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
-        self.label_icon_instance_INSTANCE_NAME.setText("")
-        self.label_instance_INSTANCE_NAME.setText(QCoreApplication.translate("MainWindow", u"INSTANCE_NAME", None))
     # retranslateUi
 

@@ -14,7 +14,7 @@
    <string>MultiSiege - Main Window</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../icons/main_window/main_window.qrc">
+   <iconset resource="../../../../assets/main_window/icons.qrc">
     <normaloff>:/main_widget_logo/logo-TB.png</normaloff>:/main_widget_logo/logo-TB.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -55,7 +55,7 @@
          <string>Add instance</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons/main_window/main_window.qrc">
+         <iconset resource="../../../../assets/main_window/icons.qrc">
           <normaloff>:/top_nav_bar/magic-wand-icon.svg</normaloff>:/top_nav_bar/magic-wand-icon.svg</iconset>
         </property>
         <property name="iconSize">
@@ -85,7 +85,7 @@
          <string>Folders</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons/main_window/main_window.qrc">
+         <iconset resource="../../../../assets/main_window/icons.qrc">
           <normaloff>:/top_nav_bar/285658_blue_folder_icon.svg</normaloff>:/top_nav_bar/285658_blue_folder_icon.svg</iconset>
         </property>
         <property name="iconSize">
@@ -108,7 +108,7 @@
          <string>Settings</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons/main_window/main_window.qrc">
+         <iconset resource="../../../../assets/main_window/icons.qrc">
           <normaloff>:/top_nav_bar/settings-cog.svg</normaloff>:/top_nav_bar/settings-cog.svg</iconset>
         </property>
         <property name="iconSize">
@@ -131,7 +131,7 @@
          <string>Help</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons/main_window/main_window.qrc">
+         <iconset resource="../../../../assets/main_window/icons.qrc">
           <normaloff>:/top_nav_bar/Blue_Question_Mark_clip_art.svg</normaloff>:/top_nav_bar/Blue_Question_Mark_clip_art.svg</iconset>
         </property>
         <property name="iconSize">
@@ -177,7 +177,7 @@
          <string>Accounts</string>
         </property>
         <property name="icon">
-         <iconset resource="../icons/main_window/main_window.qrc">
+         <iconset resource="../../../../assets/main_window/icons.qrc">
           <normaloff>:/top_nav_bar/Steam_icon_logo.svg</normaloff>:/top_nav_bar/Steam_icon_logo.svg</iconset>
         </property>
         <property name="iconSize">
@@ -206,7 +206,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../icons/main_window/main_window.qrc">:/side_nav_bar/rainbow-six-siege-logo-logo-svg-vector.svg</pixmap>
+         <pixmap resource="../../../../assets/main_window/icons.qrc">:/side_nav_bar/rainbow-six-siege-logo-logo-svg-vector.svg</pixmap>
         </property>
         <property name="alignment">
          <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -320,52 +320,22 @@
      <property name="frameShadow">
       <enum>QFrame::Shadow::Raised</enum>
      </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QFrame" name="frame_instance_INSTANCE_NAME">
-        <property name="maximumSize">
-         <size>
-          <width>113</width>
-          <height>143</height>
-         </size>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Shape::Panel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Plain</enum>
-        </property>
-        <property name="lineWidth">
-         <number>2</number>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_icon_instance_INSTANCE_NAME">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap resource="../icons/main_window/main_window.qrc">:/side_nav_bar/rainbow-six-siege-logo-logo-svg-vector.svg</pixmap>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_instance_INSTANCE_NAME">
-           <property name="text">
-            <string>INSTANCE_NAME</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>478</width>
+           <height>443</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -374,6 +344,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../../../../assets/main_window/icons.qrc"/>
   <include location="../icons/main_window/main_window.qrc"/>
  </resources>
  <connections/>
