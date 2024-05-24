@@ -45,7 +45,8 @@ class MultiSiege:
             else:
                 self.instances.append(Instance(folder, True))
 
-        self.ui.get_instances.emit(self.instances)
+        self.sort_instances()
+        self.ui.set_instance_widgets(self.instances)
 
     def setup_ui(self) -> None:
         """
@@ -96,7 +97,16 @@ class MultiSiege:
                                 version=version)
         
         self.instances.append(new_instance)
+        self.sort_instances()
 
+        self.ui.set_instance_widgets([new_instance])
+    
+    #==============#
+    #HELPER METHODS#
+    #==============#
+
+    def sort_instances(self) -> None:
+        self.instances.sort(key=lambda instance: instance.settings.instance_name.upper())# unicode char codes means that capitals go before lowercase letters
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)

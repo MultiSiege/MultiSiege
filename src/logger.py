@@ -15,6 +15,3 @@ def log(message: str, logging_level: LogLevel) -> None:
         logging.warning(message)
     elif logging_level == LogLevel.ERROR:
         logging.error(message)
-
-
-

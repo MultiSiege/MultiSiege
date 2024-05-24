@@ -17,9 +17,12 @@ class InstanceWidget(qtw.QFrame):
     def __init__(self, instance_name: str, index: int, parent: qtw.QWidget | None = None) -> None:
         super().__init__(parent)
 
+        self.instance_name = instance_name
+        self.index = index
+
         self.setObjectName(f"frame_instance_{index}")
         self.setMinimumSize(qtc.QSize(113, 143))
-        self.setMaximumSize(qtc.QSize(113, 143))
+        self.setMaximumWidth(113)
         self.setCursor(qtg.QCursor(qtg.Qt.PointingHandCursor))
         self.setFrameShape(qtw.QFrame.Shape.Panel)
         self.setFrameShadow(qtw.QFrame.Shadow.Plain)
@@ -31,12 +34,14 @@ class InstanceWidget(qtw.QFrame):
         self.label_icon.setObjectName(f"label_icon_instance_{instance_name}")
         self.label_icon.setPixmap(qtg.QPixmap(u":/side_nav_bar/rainbow-six-siege-logo-logo-svg-vector.svg"))
         self.label_icon.setAlignment(qtg.Qt.AlignmentFlag.AlignCenter)
+        self.label_icon.setSizePolicy(qtw.QSizePolicy.Policy.MinimumExpanding, qtw.QSizePolicy.Policy.MinimumExpanding)
 
         self.verticalLayout.addWidget(self.label_icon)
 
         self.label_instance = qtw.QLabel(self)
         self.label_instance.setObjectName(f"label_instance_{index}")
         self.label_instance.setAlignment(qtg.Qt.AlignmentFlag.AlignCenter)
+        self.label_instance.setWordWrap(True)
         self.label_instance.setText(instance_name)
 
         self.verticalLayout.addWidget(self.label_instance)
@@ -48,7 +53,13 @@ class FlowLayout(qtw.QLayout):
         if parent is not None:
             self.setContentsMargins(qtc.QMargins(0, 0, 0, 0))
 
-        self._item_list = []
+        self._item_list: list[qtw.QLayoutItem] = []
+
+    def sortInstances(self) -> None:
+        self._item_list.sort(key=lambda layout_item: layout_item.widget().instance_name.upper())
+
+        for index, item in enumerate(self._item_list):
+            item.widget().index = index
 
     def __del__(self):
         item = self.takeAt(0)
@@ -131,8 +142,6 @@ class FlowLayout(qtw.QLayout):
         return y + line_height - rect.y()
 
 class MainWindow(qtw.QWidget, Ui_MainWindow):
-    get_instances = qtc.Signal(list, arguments=["instances"])
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -142,8 +151,6 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.help_dialog = HelpWindow(self)
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
-
-        self.get_instances.connect(self.add_instance_widgets)
 
         self.pb_add_instance.clicked.connect(self.open_new_instance_window)
         self.pb_settings.clicked.connect(lambda: self.open_global_settings_window(0))
@@ -162,14 +169,11 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
     def open_help_window(self) -> None:
         self.help_dialog.exec()
 
-    @qtc.Slot(list)
-    def add_instance_widgets(self, instances: list[Instance]) -> None:
-        self.instance_widgets: list[InstanceWidget] = []
-
+    def set_instance_widgets(self, instances: list[Instance]) -> None:
         for instance in instances:
-            instance_widget = InstanceWidget(instance.settings.instance_name, len(self.instance_widgets), self.scrollAreaWidgetContents)
-            self.instance_widgets.append(instance_widget)
+            instance_widget = InstanceWidget(instance.settings.instance_name, self.flow_layout_instances.count(), self.scrollAreaWidgetContents)
             self.flow_layout_instances.addWidget(instance_widget)
+            self.flow_layout_instances.sortInstances()
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
