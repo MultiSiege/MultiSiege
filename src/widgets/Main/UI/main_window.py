@@ -125,7 +125,7 @@ class Ui_MainWindow(object):
         self.label_instance_name = QLabel(self.widget_sidebar)
         self.label_instance_name.setObjectName(u"label_instance_name")
         self.label_instance_name.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label_instance_name.setWordWrap(False)
+        self.label_instance_name.setWordWrap(True)
 
         self.verticalLayout.addWidget(self.label_instance_name)
 

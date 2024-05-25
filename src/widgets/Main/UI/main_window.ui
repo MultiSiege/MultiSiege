@@ -222,7 +222,7 @@
          <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
         <property name="wordWrap">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>
