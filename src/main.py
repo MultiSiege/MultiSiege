@@ -3,6 +3,7 @@ from constants import *
 import logger
 import os
 import sys
+import subprocess
 import qdarkstyle
 from PySide6 import (
     QtCore as qtc,
@@ -31,6 +32,9 @@ class MultiSiege:
         self.setup_instances()
 
         #slot handling
+        self.ui.pb_instance_folder.clicked.connect(self.open_instance_folder)
+        self.ui.pb_siege_folder.clicked.connect(self.open_siege_folder)
+
         self.ui.global_settings_dialog.get_settings.connect(self.get_global_settings)
         self.ui.global_settings_dialog.set_settings.connect(self.set_global_settings)
 
@@ -70,6 +74,17 @@ class MultiSiege:
     #=====#
     #SLOTS#
     #=====#
+    @qtc.Slot()
+    def open_instance_folder(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        subprocess.Popen(f"explorer {os.path.abspath(current_instance.INSTANCE_DIRECTORY)}")
+
+    @qtc.Slot()
+    def open_siege_folder(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        subprocess.Popen(f"explorer {os.path.abspath(current_instance.SIEGE_DIRECTORY)}")
 
     @qtc.Slot()
     def get_global_settings(self) -> None:

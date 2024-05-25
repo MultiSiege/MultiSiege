@@ -222,6 +222,8 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
             item = self.flow_layout_instances.takeAt(0)
 
         self.current_widget = None
+        self.set_instance_buttons_enabled(False)
+        self.label_instance_name.setText("you have no instances :(")
 
     def set_instance_buttons_enabled(self, enabled: bool) -> None:
         self.pb_launch.setEnabled(enabled)
