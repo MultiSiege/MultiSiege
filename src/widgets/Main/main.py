@@ -14,11 +14,17 @@ sys.path.append('src')
 from instance import Instance
 
 class InstanceWidget(qtw.QFrame):
+    current_index_changed = qtc.Signal(int)
     def __init__(self, instance_name: str, index: int, parent: qtw.QWidget | None = None) -> None:
         super().__init__(parent)
 
         self.instance_name = instance_name
         self.index = index
+
+        self.default_colour = self.palette()
+
+        self.selected_colour = qtg.QColor()
+        self.selected_colour.setRgb(0, 0, 255)
 
         self.setObjectName(f"frame_instance_{index}")
         self.setMinimumSize(qtc.QSize(113, 143))
@@ -45,6 +51,12 @@ class InstanceWidget(qtw.QFrame):
         self.label_instance.setText(instance_name)
 
         self.verticalLayout.addWidget(self.label_instance)
+
+    def mousePressEvent(self, event: qtg.QMouseEvent) -> None:
+        if event.button() == qtc.Qt.MouseButton.LeftButton:
+            self.current_index_changed.emit(self.index)
+        else:
+            super().mousePressEvent(event)
 
 class FlowLayout(qtw.QLayout):
     def __init__(self, parent=None):
@@ -152,6 +164,8 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
+        self.index = -1#by default set the current index to be not in the list as there are no instance widgets currently
+
         self.pb_add_instance.clicked.connect(self.open_new_instance_window)
         self.pb_settings.clicked.connect(lambda: self.open_global_settings_window(0))
         self.pb_accounts.clicked.connect(lambda: self.open_global_settings_window(1))
@@ -169,11 +183,33 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
     def open_help_window(self) -> None:
         self.help_dialog.exec()
 
-    def set_instance_widgets(self, instances: list[Instance]) -> None:
-        for instance in instances:
-            instance_widget = InstanceWidget(instance.settings.instance_name, self.flow_layout_instances.count(), self.scrollAreaWidgetContents)
-            self.flow_layout_instances.addWidget(instance_widget)
-            self.flow_layout_instances.sortInstances()
+    @qtc.Slot(int)
+    def set_current_instance_widget(self, index: int) -> None:
+        if self.index != -1:
+            old_instance_widget: InstanceWidget = self.flow_layout_instances.itemAt(self.index).widget()
+            old_instance_widget.setPalette(old_instance_widget.default_colour)
+
+        new_instance_widget: InstanceWidget = self.flow_layout_instances.itemAt(index).widget()
+        new_instance_widget.setPalette(new_instance_widget.selected_colour)
+        self.index = index
+
+        self.label_instance_name.setText(new_instance_widget.instance_name)
+
+    def add_instance_widget(self, instance: Instance, select_instance: bool = False) -> None:
+        """
+        Adds a widget to display an `Instance` object in the main window. Automatically sorts by name.
+        """
+        instance_widget = InstanceWidget(instance.settings.instance_name, self.flow_layout_instances.count(), self.scrollAreaWidgetContents)
+        instance_widget.current_index_changed.connect(self.set_current_instance_widget)
+
+        self.flow_layout_instances.addWidget(instance_widget)
+        self.flow_layout_instances.sortInstances()
+
+        if len(self.flow_layout_instances._item_list) == 1:#if this is the first item then automatically set is as the selected instance
+            instance_widget.current_index_changed.emit(instance_widget.index)
+        
+        if select_instance:
+            instance_widget.current_index_changed.emit(instance_widget.index)
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)

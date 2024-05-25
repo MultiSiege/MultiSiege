@@ -46,7 +46,9 @@ class MultiSiege:
                 self.instances.append(Instance(folder, True))
 
         self.sort_instances()
-        self.ui.set_instance_widgets(self.instances)
+        
+        for instance in self.instances:
+            self.ui.add_instance_widget(instance)
 
     def setup_ui(self) -> None:
         """
@@ -99,7 +101,7 @@ class MultiSiege:
         self.instances.append(new_instance)
         self.sort_instances()
 
-        self.ui.set_instance_widgets([new_instance])
+        self.ui.add_instance_widget(new_instance, True)
     
     #==============#
     #HELPER METHODS#
