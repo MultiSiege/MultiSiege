@@ -3,6 +3,7 @@ from constants import *
 import logger
 import os
 import sys
+import qdarkstyle
 from PySide6 import (
     QtCore as qtc,
     QtWidgets as qtw,
@@ -13,8 +14,16 @@ from copy import deepcopy
 from instance import Instance
 from widgets import *
 
+os.environ['QT_API'] = 'pyside'
+
 class MultiSiege:
     def __init__(self) -> None:
+        self.app = qtw.QApplication(sys.argv)
+
+        self.use_system_style = self.app.styleSheet()
+        self.dark_style = qdarkstyle.load_stylesheet_pyside6()
+        self.light_style = qdarkstyle.load_stylesheet(palette=qdarkstyle.LightPalette, qt_api='pyside6')
+
         self.global_settings = GlobalSettings()
         self.instances: list[Instance] = []
 
@@ -55,7 +64,20 @@ class MultiSiege:
         Initialises `PySide6` UI elements with the `MainWindow`. All other widgets are composed in `MainWindow`.
         """
         self.ui = MainWindow()
+        self.set_mode()
         self.ui.show()
+
+    def set_mode(self) -> None:
+        """
+        Sets the theme/mode the application is in.
+        """
+        if self.global_settings.features.mode == Mode.DARK:
+            self.app.setStyleSheet(self.dark_style)
+        elif self.global_settings.features.mode == Mode.LIGHT:
+            self.app.setStyleSheet(self.light_style)
+        elif self.global_settings.features.mode == Mode.USE_SYSTEM_SETTING:
+            self.app.setStyleSheet(self.use_system_style)
+
 
     #=====#
     #SLOTS#
@@ -76,6 +98,9 @@ class MultiSiege:
         """
         self.global_settings = self.ui.global_settings_dialog.settings
         self.global_settings.dump_settings()
+
+        #set theme
+        self.set_mode()
 
     @qtc.Slot()
     def add_instance(self) -> None:
@@ -111,9 +136,7 @@ class MultiSiege:
         self.instances.sort(key=lambda instance: instance.settings.instance_name.upper())# unicode char codes means that capitals go before lowercase letters
 
 if __name__ == "__main__":
-    app = qtw.QApplication(sys.argv)
-
     multi_siege = MultiSiege()
 
-    sys.exit(app.exec())
+    sys.exit(multi_siege.app.exec())
 

@@ -21,11 +21,6 @@ class InstanceWidget(qtw.QFrame):
         self.instance_name = instance_name
         self.index = index
 
-        self.default_colour = self.palette()
-
-        self.selected_colour = qtg.QColor()
-        self.selected_colour.setRgb(0, 0, 255)
-
         self.setObjectName(f"frame_instance_{index}")
         self.setMinimumSize(qtc.QSize(113, 143))
         self.setMaximumWidth(113)
@@ -51,6 +46,9 @@ class InstanceWidget(qtw.QFrame):
         self.label_instance.setText(instance_name)
 
         self.verticalLayout.addWidget(self.label_instance)
+
+        self.default_colour = self.label_icon.styleSheet()
+        self.selected_colour = "QLabel { color : black; }"
 
     def mousePressEvent(self, event: qtg.QMouseEvent) -> None:
         if event.button() == qtc.Qt.MouseButton.LeftButton:
@@ -165,6 +163,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
         self.current_widget: InstanceWidget | None = None#by default set the current widget to None as there are no widgets currently
+        self.set_instance_buttons_enabled(False)
 
         self.pb_add_instance.clicked.connect(self.open_new_instance_window)
         self.pb_settings.clicked.connect(lambda: self.open_global_settings_window(0))
@@ -186,10 +185,12 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
     @qtc.Slot(int)
     def set_current_instance_widget(self, index: int) -> None:
         if self.current_widget is not None:
-            self.current_widget.setPalette(self.current_widget.default_colour)
+            self.current_widget.setStyleSheet(self.current_widget.default_colour)
+        else:
+            self.set_instance_buttons_enabled(True)
 
         new_instance_widget: InstanceWidget = self.flow_layout_instances.itemAt(index).widget()
-        new_instance_widget.setPalette(new_instance_widget.selected_colour)
+        new_instance_widget.setStyleSheet(new_instance_widget.selected_colour)
 
         self.label_instance_name.setText(new_instance_widget.instance_name)
 
@@ -205,11 +206,17 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.flow_layout_instances.addWidget(instance_widget)
         self.flow_layout_instances.sortInstances()
 
-        if len(self.flow_layout_instances._item_list) == 1:#if this is the first item then automatically set is as the selected instance
+        if len(self.flow_layout_instances._item_list) == 1 or select_instance:#if this is the first item then automatically set is as the selected instance
             instance_widget.current_index_changed.emit(instance_widget.index)
-        
-        if select_instance:
-            instance_widget.current_index_changed.emit(instance_widget.index)
+
+    def set_instance_buttons_enabled(self, enabled: bool) -> None:
+        self.pb_launch.setEnabled(enabled)
+        self.pb_instance_settings.setEnabled(enabled)
+        self.pb_instance_folder.setEnabled(enabled)
+        self.pb_siege_folder.setEnabled(enabled)
+        self.pb_create_shortcut.setEnabled(enabled)
+        self.pb_export_instance.setEnabled(enabled)
+        self.pb_delete.setEnabled(enabled)
 
 if __name__ == "__main__":
     app = qtw.QApplication(sys.argv)
