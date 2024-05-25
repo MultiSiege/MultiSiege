@@ -209,6 +209,20 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         if len(self.flow_layout_instances._item_list) == 1 or select_instance:#if this is the first item then automatically set is as the selected instance
             instance_widget.current_index_changed.emit(instance_widget.index)
 
+    def clear_instance_widgets(self) -> None:
+        """
+        Clears all widgets that are displayed currently in the layout.
+        """
+        item = self.flow_layout_instances.takeAt(0)
+
+        while item is not None:
+            item.widget().deleteLater()
+            del item
+
+            item = self.flow_layout_instances.takeAt(0)
+
+        self.current_widget = None
+
     def set_instance_buttons_enabled(self, enabled: bool) -> None:
         self.pb_launch.setEnabled(enabled)
         self.pb_instance_settings.setEnabled(enabled)

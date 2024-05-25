@@ -46,18 +46,7 @@ class MultiSiege:
         """
         if not os.path.isdir(self.global_settings.features.instances_folder): os.mkdir(self.global_settings.features.instances_folder)
 
-        for folder in os.listdir(self.global_settings.features.instances_folder):
-            folder = os.path.join(self.global_settings.features.instances_folder, folder)
-            if not os.path.isdir(folder):
-                os.remove(folder)
-                logger.log("File found in top level directory of instances folder, deleting file.", LogLevel.WARNING)
-            else:
-                self.instances.append(Instance(folder, True))
-
-        self.sort_instances()
-        
-        for instance in self.instances:
-            self.ui.add_instance_widget(instance)
+        self.refresh_instances()
 
     def setup_ui(self) -> None:
         """
@@ -77,7 +66,6 @@ class MultiSiege:
             self.app.setStyleSheet(self.light_style)
         elif self.global_settings.features.mode == Mode.USE_SYSTEM_SETTING:
             self.app.setStyleSheet(self.use_system_style)
-
 
     #=====#
     #SLOTS#
@@ -99,8 +87,9 @@ class MultiSiege:
         self.global_settings = self.ui.global_settings_dialog.settings
         self.global_settings.dump_settings()
 
-        #set theme
+        #set settings
         self.set_mode()
+        self.refresh_instances()
 
     @qtc.Slot()
     def add_instance(self) -> None:
@@ -134,6 +123,28 @@ class MultiSiege:
 
     def sort_instances(self) -> None:
         self.instances.sort(key=lambda instance: instance.settings.instance_name.upper())# unicode char codes means that capitals go before lowercase letters
+
+    def refresh_instances(self) -> None:
+        """
+        Forces a refresh of the instances, in case the instance directory gets changed.
+        """
+        if not os.path.isdir(self.global_settings.features.instances_folder): self.ui.clear_instance_widgets() # if the folder specified doesn't exist just show a blank screen.
+
+        self.instances: list[Instance] = []
+
+        for folder in os.listdir(self.global_settings.features.instances_folder):
+            folder = os.path.join(self.global_settings.features.instances_folder, folder)
+            if not os.path.isdir(folder):
+                logger.log("File found in top level directory of instances folder.", LogLevel.WARNING)
+            else:
+                self.instances.append(Instance(folder, True))
+
+        self.sort_instances()
+
+        self.ui.clear_instance_widgets()        
+        for instance in self.instances:
+            self.ui.add_instance_widget(instance)
+
 
 if __name__ == "__main__":
     multi_siege = MultiSiege()
