@@ -164,7 +164,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
-        self.index = -1#by default set the current index to be not in the list as there are no instance widgets currently
+        self.current_widget: InstanceWidget | None = None#by default set the current widget to None as there are no widgets currently
 
         self.pb_add_instance.clicked.connect(self.open_new_instance_window)
         self.pb_settings.clicked.connect(lambda: self.open_global_settings_window(0))
@@ -185,15 +185,15 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
 
     @qtc.Slot(int)
     def set_current_instance_widget(self, index: int) -> None:
-        if self.index != -1:
-            old_instance_widget: InstanceWidget = self.flow_layout_instances.itemAt(self.index).widget()
-            old_instance_widget.setPalette(old_instance_widget.default_colour)
+        if self.current_widget is not None:
+            self.current_widget.setPalette(self.current_widget.default_colour)
 
         new_instance_widget: InstanceWidget = self.flow_layout_instances.itemAt(index).widget()
         new_instance_widget.setPalette(new_instance_widget.selected_colour)
-        self.index = index
 
         self.label_instance_name.setText(new_instance_widget.instance_name)
+
+        self.current_widget = new_instance_widget
 
     def add_instance_widget(self, instance: Instance, select_instance: bool = False) -> None:
         """
