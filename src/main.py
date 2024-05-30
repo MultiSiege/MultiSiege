@@ -74,6 +74,7 @@ class MultiSiege:
     #=====#
     #SLOTS#
     #=====#
+    
     @qtc.Slot()
     def open_instance_folder(self) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
@@ -121,7 +122,7 @@ class MultiSiege:
             instance_directory = os.path.join(self.global_settings.features.instances_folder, instance_name + str(count))
             count += 1
 
-        new_instance = Instance(instance_directory, 
+        new_instance = Instance(instance_directory,
                                 False, 
                                 instance_name=instance_name,
                                 username=username,
@@ -159,7 +160,6 @@ class MultiSiege:
         self.ui.clear_instance_widgets()        
         for instance in self.instances:
             self.ui.add_instance_widget(instance)
-
 
 if __name__ == "__main__":
     multi_siege = MultiSiege()

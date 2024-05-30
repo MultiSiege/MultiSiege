@@ -12,19 +12,46 @@ sys.path.append('src')
 from models import *
 from settings import *
 
-class AddSteamAccountWindow(Ui_dialog_add_steam_account, qtw.QDialog):
-    account_created = qtc.Signal(arguments=["account_name", "password"])
-    def __init__(self) -> None:
-        self.account_created.emit()
-        self.accepted.connect(self.process_steam_account)
+class AddSteamAccountWindow(qtw.QDialog, Ui_dialog_add_steam_account):
+    account_created = qtc.Signal(str, str, arguments=["account_name", "password"])
+    def __init__(self, parent: qtw.QWidget | None = None) -> None:
+        super().__init__(parent)
+        self.setupUi(self)
+        self.pb_accept.clicked.connect(self.process_steam_account)
+        self.pb_reject.clicked.connect(self.reject)
+        self.le_account_name.textChanged.connect(self.handle_accept_button)
+        self.le_password.textChanged.connect(self.handle_accept_button)
 
+    @qtc.Slot()
+    def handle_accept_button(self) -> None:
+        if len(self.le_account_name.text()) >= 2 and len(self.le_password.text()) >= 8:
+            self.pb_accept.setEnabled(True)
+        else:
+            self.pb_accept.setEnabled(False)
+
+    @qtc.Slot()
+    def process_steam_account(self) -> None:
+        self.account_created.emit(self.le_account_name.text(), self.le_password.text())
+        self.accept()
+
+    def exec(self) -> int:
+        """
+        Overwrites the `exec` method to reset the window every time.
+        """
+        self.le_account_name.setText("")
+        self.le_password.setText("")
+        self.pb_accept.setEnabled(False)
+
+        self.setFocus()
+        
+        return super().exec()
 
 class AccountsModel(qtg.QStandardItemModel):
     def __init__(self, accounts: list[AccountModel]) -> None:
         super().__init__()
 
-        self.setColumnCount(2)
-        self.setHorizontalHeaderLabels(["Account name", "Region"])
+        self.setColumnCount(1)
+        self.setHorizontalHeaderLabels(["Account name"])
 
         for account in accounts:
             self.add_account(account)
@@ -32,14 +59,9 @@ class AccountsModel(qtg.QStandardItemModel):
     def add_account(self, account: AccountModel) -> None:
         row = self.rowCount()
 
-        for column in range(2):
-            item = qtg.QStandardItem()
-            if column == 0:
-                item.setText(account.username)
-            else:
-                item.setText(account.region)
-
-            self.setItem(row, column, item)
+        item = qtg.QStandardItem()
+        item.setText(account.username)
+        self.setItem(row, 0, item)
 
 class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
     """
@@ -50,12 +72,14 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
     get_settings = qtc.Signal()
     set_settings = qtc.Signal()
 
-    def __init__(self, parent: qtc.QObject | None = None) -> None:
+    def __init__(self, parent: qtw.QWidget | None = None) -> None:
         super().__init__(parent)
         self.setupUi(self)
 
         self.dialog = qtw.QFileDialog(self)
         self.dialog.setFileMode(qtw.QFileDialog.FileMode.Directory)
+
+        self.add_steam_window = AddSteamAccountWindow(self)
 
         #set the settings as None for now for better type hinting
         self.settings: GlobalSettings | None = None
@@ -64,6 +88,8 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
         self.listwidget_page_selector.itemPressed.connect(self.set_page)
 
         self.treeView.pressed.connect(self.set_remove_enabled)
+        self.pb_add_account.clicked.connect(self.add_steam_window.exec)
+        self.add_steam_window.account_created.connect(self.add_account)
         self.pb_remove_account.clicked.connect(self.remove_selected_account)
 
         self.pb_instances_file_dialog.clicked.connect(lambda: self.handle_folder_dialog("Instances Folder", self.le_instances))
@@ -118,6 +144,12 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
         if self.dialog.exec():
             folder = self.dialog.selectedFiles()[0]
             line_edit.setText(self.format_folder_path(folder))
+
+    @qtc.Slot(str, str)
+    def add_account(self, account_name: str, password: str) -> None:
+        account = AccountModel(username=account_name, password=password)
+        self.settings.set_accounts(self.settings.accounts + [account])
+        self.accounts_model.add_account(account)
 
     @qtc.Slot()
     def set_remove_enabled(self) -> None:

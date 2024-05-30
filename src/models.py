@@ -9,7 +9,6 @@ import os
 class AccountModel(BaseModel):
     username: str
     password: str
-    region: str
 
     @field_validator('username', 'password')
     def check_alphanumeric(cls, v: str, info: ValidationInfo) -> str:
