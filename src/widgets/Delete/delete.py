@@ -15,7 +15,7 @@ class DeleteWindow(qtw.QDialog, Ui_Dialog):
         self.accepted.connect(self.delete_confirmed.emit)
 
     def exec(self, instance_name: str) -> int:
-        self.label_warning.setText(self.label_warning.text().replace("INSTANCE_NAME", instance_name))
+        self.label_warning.setText(f'Are you sure you want to delete "{instance_name}"? This action is irreversible.')
         return super().exec()
 
     
