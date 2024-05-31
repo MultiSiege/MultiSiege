@@ -78,14 +78,12 @@ class MultiSiege:
     @qtc.Slot()
     def open_instance_folder(self) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
-
-        subprocess.Popen(f"explorer {os.path.abspath(current_instance.INSTANCE_DIRECTORY)}")
+        current_instance.open_instance_folder()
 
     @qtc.Slot()
     def open_siege_folder(self) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
-
-        subprocess.Popen(f"explorer {os.path.abspath(current_instance.SIEGE_DIRECTORY)}")
+        current_instance.open_siege_folder()
 
     @qtc.Slot()
     def get_global_settings(self) -> None:

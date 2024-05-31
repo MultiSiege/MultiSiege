@@ -88,6 +88,12 @@ class Instance:
 
         self.console.log("Killed siege process that is currently running.", LogLevel.WARNING)
 
+    def open_instance_folder(self) -> None:
+        subprocess.Popen(f"explorer {os.path.abspath(self.INSTANCE_DIRECTORY)}")
+    
+    def open_siege_folder(self) -> None:
+        subprocess.Popen(f"explorer {os.path.abspath(self.SIEGE_DIRECTORY)}")
+
     def download(self, username: str, password: str) -> None:
         """
         Downloads the instance of siege using `steamctl`.

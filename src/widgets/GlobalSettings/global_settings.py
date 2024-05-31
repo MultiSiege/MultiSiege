@@ -161,7 +161,11 @@ class GlobalSettingsWindow(qtw.QDialog, Ui_dialog_global_settings):
     @qtc.Slot()
     def remove_selected_account(self) -> None:
         if self.treeView.currentIndex().row() != -1:
-            self.treeView.model().removeRow(self.treeView.selectedIndexes()[0].row())
+            accounts = self.settings.accounts
+            index = self.treeView.selectedIndexes()[0].row()
+            self.treeView.model().removeRow(index)
+            del accounts[index]
+            self.settings.set_accounts(accounts)
             if self.treeView.currentIndex().row() == -1: self.pb_remove_account.setEnabled(False)
 
     @qtc.Slot()
