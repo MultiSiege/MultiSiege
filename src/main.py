@@ -40,6 +40,9 @@ class MultiSiege:
 
         self.ui.new_instance_dialog.accepted.connect(self.add_instance)
 
+        self.ui.pb_delete.clicked.connect(self.open_delete_window)
+        self.ui.delete_dialog.delete_confirmed.connect(self.delete_instance)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -130,6 +133,18 @@ class MultiSiege:
         self.sort_instances()
 
         self.ui.add_instance_widget(new_instance, True)
+
+    @qtc.Slot()
+    def open_delete_window(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+        self.ui.delete_dialog.exec(current_instance.settings.instance_name)
+
+    @qtc.Slot()
+    def delete_instance(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        current_instance.delete()
+        self.refresh_instances()
     
     #==============#
     #HELPER METHODS#

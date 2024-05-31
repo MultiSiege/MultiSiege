@@ -9,6 +9,7 @@ from Main.UI.main_window import Ui_MainWindow
 from NewInstance.new_instance import NewInstance
 from GlobalSettings.global_settings import GlobalSettingsWindow
 from Help.help import HelpWindow
+from Delete.delete import DeleteWindow
 
 sys.path.append('src')
 from instance import Instance
@@ -159,6 +160,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.new_instance_dialog = NewInstance(self)
         self.global_settings_dialog = GlobalSettingsWindow(self)
         self.help_dialog = HelpWindow(self)
+        self.delete_dialog = DeleteWindow(self)
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
