@@ -94,19 +94,35 @@ class Instance:
     def open_siege_folder(self) -> None:
         subprocess.Popen(f"explorer {os.path.abspath(self.SIEGE_DIRECTORY)}")
 
-    def download(self, username: str, password: str) -> None:
+    def download(self, username: str, password: str, sku_rus: bool) -> None:
         """
-        Downloads the instance of siege using `steamctl`.
+        Downloads the instance of siege using `DepotDownloader`.
         Automatically applies the right crack for the respective season.
-
-        Should only be used once when an instance is created, any other time use the `verify` method.
         """
-        depot = SiegeDepots[self.settings.version.name]
+        manifest_content = SiegeManifests_CONTENT[self.settings.version.name]
+        manifest_sku_ww = SiegeManifests_SKU_WW[self.settings.version.name]
+        manifest_sku_rus = SiegeManifests_SKU_RUS[self.settings.version.name]
 
-        try:
-            downloader_process = subprocess.run(["steamctl", "depot", "download", ])
-        except:
-            print("ez")
+        crack_type = SiegeVersion_CrackTypes[self.settings.version.name].value
+
+        #download localisation files
+        if sku_rus:
+            subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+        else:
+            subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+
+        #download content
+        subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+
+        #add crack files
+        if crack_type == CrackType.Y1SX_Y6S2:
+            shutil.copytree(Y1SX_Y6S4_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
+        elif crack_type == CrackType.Y6S3:
+            shutil.copytree(Y6S3_CRACK, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
+        else:
+            shutil.copytree(Y6S4_Y8SX_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
+
+        logger.log(f"Download completed for {self.settings.instance_name}.", LogLevel.INFO)
 
     def create_shortcut(self, name: str, shortcut_path: str) -> None:
         """

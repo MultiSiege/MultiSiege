@@ -6,6 +6,11 @@ SENTRY_LOCATION = os.path.abspath('./sentries')
 
 SIEGE_APP_ID = 359550
 
+DEPOT_DOWNLOADER = os.path.abspath(os.path.join(os.getcwd(), "assets", "DepotDownloader", "DepotDownloader.exe"))
+Y1SX_Y6S4_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y1SX_Y6S2"))
+Y6S3_CRACK = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S3"))
+Y6S4_Y8SX_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S4_Y8SX"))
+
 SCIPTFILE="""
 Set oWS = WScript.CreateObject("WScript.Shell") 
 sLinkFile = "{name}"
@@ -74,7 +79,7 @@ class SiegeDepots(enum.IntEnum):
 
 class SiegeManifests_CONTENT(enum.IntEnum):
     """
-    Manifests IDs for all siege versions for the `CONTENT` depot.
+    Manifests IDs for the `CONTENT` depot.
     """
     VANILLA = 3893422760579204530
     BLACK_ICE = 3893422760579204530
@@ -113,7 +118,7 @@ class SiegeManifests_CONTENT(enum.IntEnum):
 
 class SiegeManifests_SKU_RUS(enum.IntEnum):
     """
-    Manifest IDs for all siege versions for the `SKU_RUS` depot.
+    Manifest IDs for the `SKU_RUS` depot.
     """
     VANILLA = 6835384933146381100
     BLACK_ICE = 5362991837480196824
@@ -151,7 +156,85 @@ class SiegeManifests_SKU_RUS(enum.IntEnum):
     DEADLY_OMEN = 1619182300337183882
 
 class SiegeManifests_SKU_WW(enum.IntEnum):
-    pass
+    """
+    Manifest IDs for `SKU_WW` depot.
+    """
+    VANILLA = 8358812283631269928
+    BLACK_ICE = 5188997148801516344
+    DUST_LINE = 2303064029242396590
+    SKULL_RAIN = 5819137024728546741
+    RED_CROW = 3576607363557872807
+    VELVET_SHELL = 2248734317261478192
+    HEALTH = 5875987479498297665
+    BLOOD_ORCHID = 6708129824495912434
+    WHITE_NOISE = 8748734086032257441
+    CHIMERA = 5071357104726974256
+    PARABELLUM = 6507886921175556869
+    GRIM_SKY = 5562094852451837435
+    WIND_BASTION = 6502258854032233436
+    BURNT_HORIZON = 8356277316976403078
+    PHANTOM_SIGHT = 693082837425613508
+    EMBER_RISE = 3546781236735558235
+    SHIFTING_TIDES = 299124516841461614
+    VOID_EDGE = 4736360397583523381
+    STEEL_WAVE = 4367817844736324940
+    SHADOW_LEGACY = 85893637567200342
+    NEON_DAWN = 4713320084981112320
+    CRIMSON_HEIST = 7890853311380514304
+    NORTH_STAR = 2525708706057497155
+    CRYSTAL_GUARD = 4859695099882698284
+    HIGH_CALIBRE = 2637055726475611418
+    DEMON_VEIL = 8323869632165751287
+    VECTOR_GLARE = 1363132201391540345
+    BRUTAL_SWARM = 6425223567680952075
+    SOLAR_RAID = 4466027729495813039
+    COMMANDING_FORCE = 3275824905781062648
+    DREAD_FACTOR = 3558972082517836520
+    HEAVY_METTLE = 2068160275622519212
+    DEEP_FREEZE = 7646647065987620875
+    DEADLY_OMEN = 1959067516419454682
+
+class CrackType(enum.Enum):
+    Y1SX_Y6S2 = "Y1SX_Y6S2"
+    Y6S3 = "Y6S3"
+    Y6S4_Y8SX = "Y6S4_Y8SX"
+
+class SiegeVersion_CrackTypes(enum.Enum):
+    VANILLA = CrackType.Y1SX_Y6S2
+    BLACK_ICE = CrackType.Y1SX_Y6S2
+    DUST_LINE = CrackType.Y1SX_Y6S2
+    SKULL_RAIN = CrackType.Y1SX_Y6S2
+    RED_CROW = CrackType.Y1SX_Y6S2
+    VELVET_SHELL = CrackType.Y1SX_Y6S2
+    HEALTH = CrackType.Y1SX_Y6S2
+    BLOOD_ORCHID = CrackType.Y1SX_Y6S2
+    WHITE_NOISE = CrackType.Y1SX_Y6S2
+    CHIMERA = CrackType.Y1SX_Y6S2
+    PARABELLUM = CrackType.Y1SX_Y6S2
+    GRIM_SKY = CrackType.Y1SX_Y6S2
+    WIND_BASTION = CrackType.Y1SX_Y6S2
+    BURNT_HORIZON = CrackType.Y1SX_Y6S2
+    PHANTOM_SIGHT = CrackType.Y1SX_Y6S2
+    EMBER_RISE = CrackType.Y1SX_Y6S2
+    SHIFTING_TIDES = CrackType.Y1SX_Y6S2
+    VOID_EDGE = CrackType.Y1SX_Y6S2
+    STEEL_WAVE = CrackType.Y1SX_Y6S2
+    SHADOW_LEGACY = CrackType.Y1SX_Y6S2
+    NEON_DAWN = CrackType.Y1SX_Y6S2
+    CRIMSON_HEIST = CrackType.Y1SX_Y6S2
+    NORTH_STAR = CrackType.Y1SX_Y6S2
+    CRYSTAL_GUARD = CrackType.Y6S3
+    HIGH_CALIBRE = CrackType.Y6S4_Y8SX
+    DEMON_VEIL = CrackType.Y6S4_Y8SX
+    VECTOR_GLARE = CrackType.Y6S4_Y8SX
+    BRUTAL_SWARM = CrackType.Y6S4_Y8SX
+    SOLAR_RAID = CrackType.Y6S4_Y8SX
+    COMMANDING_FORCE = CrackType.Y6S4_Y8SX
+    DREAD_FACTOR = CrackType.Y6S4_Y8SX
+    HEAVY_METTLE = CrackType.Y6S4_Y8SX
+    DEEP_FREEZE = CrackType.Y6S4_Y8SX
+    DEADLY_OMEN = CrackType.Y6S4_Y8SX
+
 
 class Status(enum.Enum):
     """
