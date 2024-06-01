@@ -46,6 +46,9 @@ class MultiSiege:
         self.ui.pb_create_shortcut.clicked.connect(self.open_create_shortcut_window)
         self.ui.create_shortcut_dialog.accepted.connect(self.create_shortcut)
 
+        self.ui.pb_instance_settings.clicked.connect(self.open_instance_settings_window)
+        self.ui.instance_settings_dialog.set_settings.connect(self.set_instance_settings)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -167,7 +170,26 @@ class MultiSiege:
             current_instance.create_shortcut(self.ui.create_shortcut_dialog.le_shortcut_path.text())
         except:
             logger.log("Could not create shortcut with path specified.", LogLevel.ERROR)
-    
+
+    @qtc.Slot()
+    def open_instance_settings_window(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        self.ui.instance_settings_dialog.exec(current_instance.settings)
+
+    @qtc.Slot(str, str, int)
+    def set_instance_settings(self, instance_name: str, username: str, version_index) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        if instance_name != "":
+            current_instance.settings.set_instance_name(instance_name)
+        if username != "":
+            current_instance.settings.set_username(username)
+
+        current_instance.settings.set_version(list(SiegeVersions)[version_index])
+
+        current_instance.settings.dump_settings()
+        self.refresh_instances() 
     #==============#
     #HELPER METHODS#
     #==============#

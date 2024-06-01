@@ -11,6 +11,7 @@ from GlobalSettings.global_settings import GlobalSettingsWindow
 from Help.help import HelpWindow
 from Delete.delete import DeleteWindow
 from CreateShortcut.create_shortcut import CreateShortcutWindow
+from InstanceSettings.instance_settings import InstanceSettingsWindow
 
 sys.path.append('src')
 from instance import Instance
@@ -163,6 +164,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.help_dialog = HelpWindow(self)
         self.delete_dialog = DeleteWindow(self)
         self.create_shortcut_dialog = CreateShortcutWindow(self)
+        self.instance_settings_dialog = InstanceSettingsWindow(self)
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
