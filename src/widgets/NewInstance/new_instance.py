@@ -149,7 +149,10 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         tree_view_current_row = self.treeView_seasons.currentIndex().row()
         index = self.treeView_seasons.model().index(tree_view_current_row, 0)
 
-        data: str = self.treeView_seasons.model().itemData(index)[0]
+        try:
+            data: str = self.treeView_seasons.model().itemData(index)[0]
+        except:
+            data = "VANILLA" #caused by a bug because selecting manually doesn't simulate a human press so data is not found
         data = data.replace(" ", "_")
         data = data.upper()
 

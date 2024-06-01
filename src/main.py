@@ -178,7 +178,7 @@ class MultiSiege:
         self.ui.instance_settings_dialog.exec(current_instance.settings)
 
     @qtc.Slot(str, str, int)
-    def set_instance_settings(self, instance_name: str, username: str, version_index) -> None:
+    def set_instance_settings(self, instance_name: str, username: str, version_index: int) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
 
         if instance_name != "":
@@ -190,6 +190,7 @@ class MultiSiege:
 
         current_instance.settings.dump_settings()
         self.refresh_instances() 
+
     #==============#
     #HELPER METHODS#
     #==============#
