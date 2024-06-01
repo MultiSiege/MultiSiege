@@ -57,10 +57,10 @@ class Instance:
                 
     def launch(self) -> None:
         """
-        Attempts to launch the instance through `RainbowSix.exe`.
+        Attempts to launch the instance through `RainbowSix.bat`. If it cannot launch, it will download the files again.
         """
         try:
-            self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
             self.console.log("Could not find RainbowSix.exe, try verifying files to recover lost data.", LogLevel.ERROR)
             self.siege_process = None
@@ -114,14 +114,14 @@ class Instance:
 
         Shortcuts are saved to `shortcut_path`.
         """
-        siege_exe_path = os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe")
-        if not os.path.isfile(siege_exe_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.exe", LogLevel.WARNING)
+        siege_bat_path = os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")
+        if not os.path.isfile(siege_bat_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.exe", LogLevel.WARNING)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             bat_file= os.path.join(tmpdir, "CreateShortcut.vbs")
             name_path = os.path.join(shortcut_path,f"{name.upper()}.lnk")
             with open(bat_file, "w") as fout:
-                fout.write(SCIPTFILE.format(name=name_path, targetpath=siege_exe_path))
+                fout.write(SCIPTFILE.format(name=name_path, targetpath=siege_bat_path))
             try:
                 subprocess.call(["cscript", bat_file], cwd=tmpdir)
             except Exception as ex:
