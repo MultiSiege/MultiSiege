@@ -110,18 +110,15 @@ class Instance:
 
     def create_shortcut(self, name: str, shortcut_path: str) -> None:
         """
-        Creates a shortcut for the RainbowSix.exe file with the `name` specified.
-
-        Shortcuts are saved to `shortcut_path`.
+        Creates a shortcut for the RainbowSix.bat file with the `shortcut_path` specified.
         """
         siege_bat_path = os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")
-        if not os.path.isfile(siege_bat_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.exe", LogLevel.WARNING)
+        if not os.path.isfile(siege_bat_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.bat", LogLevel.WARNING)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             bat_file= os.path.join(tmpdir, "CreateShortcut.vbs")
-            name_path = os.path.join(shortcut_path,f"{name.upper()}.lnk")
             with open(bat_file, "w") as fout:
-                fout.write(SCIPTFILE.format(name=name_path, targetpath=siege_bat_path))
+                fout.write(SCIPTFILE.format(name=shortcut_path, targetpath=siege_bat_path))
             try:
                 subprocess.call(["cscript", bat_file], cwd=tmpdir)
             except Exception as ex:

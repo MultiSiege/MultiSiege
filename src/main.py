@@ -43,6 +43,9 @@ class MultiSiege:
         self.ui.pb_delete.clicked.connect(self.open_delete_window)
         self.ui.delete_dialog.delete_confirmed.connect(self.delete_instance)
 
+        self.ui.pb_create_shortcut.clicked.connect(self.open_create_shortcut_window)
+        self.ui.create_shortcut_dialog.accepted.connect(self.create_shortcut)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -145,6 +148,25 @@ class MultiSiege:
 
         current_instance.delete()
         self.refresh_instances()
+
+    @qtc.Slot()
+    def open_create_shortcut_window(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+        self.ui.create_shortcut_dialog.exec(current_instance.settings.instance_name)
+
+    @qtc.Slot()
+    def create_shortcut(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        shortcut_path = self.ui.create_shortcut_dialog.le_shortcut_path.text()
+
+        if not shortcut_path.endswith(".lnk"):
+            return logger.log("Attempted to create shortcut that doesn't end in .lnk", LogLevel.WARNING)
+        
+        try:
+            current_instance.create_shortcut(self.ui.create_shortcut_dialog.le_shortcut_path.text())
+        except:
+            logger.log("Could not create shortcut with path specified.", LogLevel.ERROR)
     
     #==============#
     #HELPER METHODS#
