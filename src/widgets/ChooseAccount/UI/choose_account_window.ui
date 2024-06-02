@@ -31,16 +31,6 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Choose an account to download Rainbow Six Siege from Steam depots.</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
    <item row="6" column="1">
     <widget class="QPushButton" name="pb_accept">
      <property name="text">
@@ -124,6 +114,16 @@
     <widget class="QPushButton" name="pb_one_time_account">
      <property name="text">
       <string>One-time account</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Choose an account to download Rainbow Six Siege from Steam depots.</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
    </item>

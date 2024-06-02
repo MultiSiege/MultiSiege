@@ -35,19 +35,17 @@ class Ui_choose_account(object):
 
         self.gridLayout.addItem(self.horizontalSpacer, 6, 0, 1, 1)
 
-        self.label = QLabel(choose_account)
-        self.label.setObjectName(u"label")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 2)
-
         self.pb_accept = QPushButton(choose_account)
         self.pb_accept.setObjectName(u"pb_accept")
+        self.pb_accept.setMinimumWidth(105)
+        self.pb_accept.setMaximumWidth(105)
 
         self.gridLayout.addWidget(self.pb_accept, 6, 1, 1, 1)
 
         self.pb_reject = QPushButton(choose_account)
         self.pb_reject.setObjectName(u"pb_reject")
+        self.pb_reject.setMinimumWidth(105)
+        self.pb_reject.setMaximumWidth(105)
 
         self.gridLayout.addWidget(self.pb_reject, 6, 2, 1, 1)
 
@@ -107,6 +105,12 @@ class Ui_choose_account(object):
 
         self.gridLayout.addWidget(self.pb_one_time_account, 2, 2, 1, 1)
 
+        self.label = QLabel(choose_account)
+        self.label.setObjectName(u"label")
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.gridLayout.addWidget(self.label, 0, 0, 1, 3)
+
 
         self.retranslateUi(choose_account)
 
@@ -115,11 +119,11 @@ class Ui_choose_account(object):
 
     def retranslateUi(self, choose_account):
         choose_account.setWindowTitle(QCoreApplication.translate("choose_account", u"Choose account - MultiSiege", None))
-        self.label.setText(QCoreApplication.translate("choose_account", u"Choose an account to download Rainbow Six Siege from Steam depots.", None))
         self.pb_accept.setText(QCoreApplication.translate("choose_account", u"OK", None))
         self.pb_reject.setText(QCoreApplication.translate("choose_account", u"Close", None))
         self.lb_SKU_RUS_countries.setText(QCoreApplication.translate("choose_account", u"<html><head/><body><p>\u2022 Armenia</p><p>\u2022 Azerbaijan</p><p>\u2022 Belarus</p><p>\u2022 Georgia</p><p>\u2022 Kazakhstan</p><p>\u2022 Republic of Moldova</p><p>\u2022 Russian Federation</p><p>\u2022 Tajikistan</p><p>\u2022 Ukraine</p><p>\u2022 Uzbekistan</p></body></html>", None))
         self.cb_SKU_RUS.setText(QCoreApplication.translate("choose_account", u"If your Steam account's store country is from any of the following countries, please select this checkbox.", None))
         self.pb_one_time_account.setText(QCoreApplication.translate("choose_account", u"One-time account", None))
+        self.label.setText(QCoreApplication.translate("choose_account", u"Choose an account to download Rainbow Six Siege from Steam depots.", None))
     # retranslateUi
 

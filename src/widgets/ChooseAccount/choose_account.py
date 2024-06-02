@@ -36,12 +36,17 @@ class ChooseAccountWindow(qtw.QDialog, Ui_choose_account):
         self.setupUi(self)
 
         self.add_steam_account_dialog = AddSteamAccountWindow(self)
-
-        self.pb_accept.clicked.connect(self.accept)
         self.pb_reject.clicked.connect(self.reject)
 
+        self.pb_one_time_account.clicked.connect(self.add_steam_account_dialog.exec)
+
         self.add_steam_account_dialog.account_created.connect(self.handle_one_time_account)
-        self.accepted.connect(lambda: self.account_selected.emit(self.tv_accounts.currentIndex().row(), self.cb_SKU_RUS.isChecked()))
+        self.pb_accept.clicked.connect(self.handle_account)
+
+    @qtc.Slot()
+    def handle_account(self) -> None:
+        self.account_selected.emit(self.tv_accounts.currentIndex().row(), self.cb_SKU_RUS.isChecked())
+        self.accept()
 
     @qtc.Slot(str, str)
     def handle_one_time_account(self, account_name: str, password: str) -> None:
@@ -51,6 +56,8 @@ class ChooseAccountWindow(qtw.QDialog, Ui_choose_account):
     def exec(self, accounts: list[AccountModel]) -> int:
         self.accounts_model = AccountsModel(accounts)
         self.tv_accounts.setModel(self.accounts_model)
+
+        self.setFocus()
 
         return super().exec()
 
