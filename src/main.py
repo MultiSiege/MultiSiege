@@ -49,6 +49,10 @@ class MultiSiege:
         self.ui.pb_instance_settings.clicked.connect(self.open_instance_settings_window)
         self.ui.instance_settings_dialog.set_settings.connect(self.set_instance_settings)
 
+        self.ui.pb_download.clicked.connect(self.open_choose_account_window)
+        self.ui.choose_account_dialog.account_selected.connect(self.handle_download)
+        self.ui.choose_account_dialog.one_time_account_created.connect(self.handle_download_one_time_account)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -177,6 +181,10 @@ class MultiSiege:
 
         self.ui.instance_settings_dialog.exec(current_instance.settings)
 
+    @qtc.Slot()
+    def open_choose_account_window(self) -> None:
+        self.ui.choose_account_dialog.exec(self.global_settings.accounts)
+
     @qtc.Slot(str, str, int)
     def set_instance_settings(self, instance_name: str, username: str, version_index: int) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
@@ -189,7 +197,21 @@ class MultiSiege:
         current_instance.settings.set_version(list(SiegeVersions)[version_index])
 
         current_instance.settings.dump_settings()
-        self.refresh_instances() 
+        self.refresh_instances()
+
+    @qtc.Slot(int, bool)
+    def handle_download(self, account_index: int, sku_rus: bool) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+        account = self.global_settings.accounts[account_index]
+
+        current_instance.download(account.username, account.password, sku_rus)
+
+    @qtc.Slot(str, str, bool)
+    def handle_download_one_time_account(self, account_name: str, password: str, sku_rus: bool) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        current_instance.download(account_name, password, sku_rus)
+
 
     #==============#
     #HELPER METHODS#

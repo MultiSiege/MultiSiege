@@ -62,7 +62,7 @@ class Instance:
         try:
             self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
-            self.console.log("Could not find RainbowSix.exe, try verifying files to recover lost data.", LogLevel.ERROR)
+            self.console.log("Could not find RainbowSix.bat, try verifying files to recover lost data.", LogLevel.ERROR)
             self.siege_process = None
             return
 
@@ -103,16 +103,16 @@ class Instance:
         manifest_sku_ww = SiegeManifests_SKU_WW[self.settings.version.name]
         manifest_sku_rus = SiegeManifests_SKU_RUS[self.settings.version.name]
 
-        crack_type = SiegeVersion_CrackTypes[self.settings.version.name].value
+        crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value
 
         #download localisation files
         if sku_rus:
-            subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+            subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
         else:
-            subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+            subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
 
         #download content
-        subprocess.call(f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate')
+        subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
 
         #add crack files
         if crack_type == CrackType.Y1SX_Y6S2:

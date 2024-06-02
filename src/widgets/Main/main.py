@@ -12,6 +12,7 @@ from Help.help import HelpWindow
 from Delete.delete import DeleteWindow
 from CreateShortcut.create_shortcut import CreateShortcutWindow
 from InstanceSettings.instance_settings import InstanceSettingsWindow
+from ChooseAccount.choose_account import ChooseAccountWindow
 
 sys.path.append('src')
 from instance import Instance
@@ -165,6 +166,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.delete_dialog = DeleteWindow(self)
         self.create_shortcut_dialog = CreateShortcutWindow(self)
         self.instance_settings_dialog = InstanceSettingsWindow(self)
+        self.choose_account_dialog = ChooseAccountWindow(self)
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 
@@ -233,11 +235,11 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
 
     def set_instance_buttons_enabled(self, enabled: bool) -> None:
         self.pb_launch.setEnabled(enabled)
+        self.pb_download.setEnabled(enabled)
         self.pb_instance_settings.setEnabled(enabled)
         self.pb_instance_folder.setEnabled(enabled)
         self.pb_siege_folder.setEnabled(enabled)
         self.pb_create_shortcut.setEnabled(enabled)
-        self.pb_export_instance.setEnabled(enabled)
         self.pb_delete.setEnabled(enabled)
 
 if __name__ == "__main__":

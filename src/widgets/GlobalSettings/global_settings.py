@@ -6,45 +6,11 @@ from PySide6 import (
 )
 sys.path.append('src/widgets')
 from GlobalSettings.UI.global_settings_window import Ui_dialog_global_settings
-from GlobalSettings.UI.add_steam_account_window import Ui_dialog_add_steam_account
+from AddSteamAccount.add_steam_account import AddSteamAccountWindow
 
 sys.path.append('src')
 from models import *
 from settings import *
-
-class AddSteamAccountWindow(qtw.QDialog, Ui_dialog_add_steam_account):
-    account_created = qtc.Signal(str, str, arguments=["account_name", "password"])
-    def __init__(self, parent: qtw.QWidget | None = None) -> None:
-        super().__init__(parent)
-        self.setupUi(self)
-        self.pb_accept.clicked.connect(self.process_steam_account)
-        self.pb_reject.clicked.connect(self.reject)
-        self.le_account_name.textChanged.connect(self.handle_accept_button)
-        self.le_password.textChanged.connect(self.handle_accept_button)
-
-    @qtc.Slot()
-    def handle_accept_button(self) -> None:
-        if len(self.le_account_name.text()) >= 2 and len(self.le_password.text()) >= 8:
-            self.pb_accept.setEnabled(True)
-        else:
-            self.pb_accept.setEnabled(False)
-
-    @qtc.Slot()
-    def process_steam_account(self) -> None:
-        self.account_created.emit(self.le_account_name.text(), self.le_password.text())
-        self.accept()
-
-    def exec(self) -> int:
-        """
-        Overwrites the `exec` method to reset the window every time.
-        """
-        self.le_account_name.setText("")
-        self.le_password.setText("")
-        self.pb_accept.setEnabled(False)
-
-        self.setFocus()
-        
-        return super().exec()
 
 class AccountsModel(qtg.QStandardItemModel):
     def __init__(self, accounts: list[AccountModel]) -> None:

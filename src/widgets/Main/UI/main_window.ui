@@ -241,6 +241,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pb_download">
+        <property name="text">
+         <string>Download</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Line" name="line_3">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
@@ -279,13 +286,6 @@
        <widget class="QPushButton" name="pb_create_shortcut">
         <property name="text">
          <string>Create Shortcut</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pb_export_instance">
-        <property name="text">
-         <string>Export Instance</string>
         </property>
        </widget>
       </item>

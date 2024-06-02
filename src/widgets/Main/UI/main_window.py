@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'main_window.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.0
+## Created by: Qt User Interface Compiler version 6.7.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -141,6 +141,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.pb_launch)
 
+        self.pb_download = QPushButton(self.widget_sidebar)
+        self.pb_download.setObjectName(u"pb_download")
+
+        self.verticalLayout.addWidget(self.pb_download)
+
         self.line_3 = QFrame(self.widget_sidebar)
         self.line_3.setObjectName(u"line_3")
         self.line_3.setFrameShape(QFrame.Shape.HLine)
@@ -174,11 +179,6 @@ class Ui_MainWindow(object):
         self.pb_create_shortcut.setObjectName(u"pb_create_shortcut")
 
         self.verticalLayout.addWidget(self.pb_create_shortcut)
-
-        self.pb_export_instance = QPushButton(self.widget_sidebar)
-        self.pb_export_instance.setObjectName(u"pb_export_instance")
-
-        self.verticalLayout.addWidget(self.pb_export_instance)
 
         self.pb_delete = QPushButton(self.widget_sidebar)
         self.pb_delete.setObjectName(u"pb_delete")
@@ -231,11 +231,11 @@ class Ui_MainWindow(object):
         self.label_instance_icon_sidebar.setText("")
         self.label_instance_name.setText(QCoreApplication.translate("MainWindow", u"INSTANCE_NAME", None))
         self.pb_launch.setText(QCoreApplication.translate("MainWindow", u"Launch", None))
+        self.pb_download.setText(QCoreApplication.translate("MainWindow", u"Download", None))
         self.pb_instance_settings.setText(QCoreApplication.translate("MainWindow", u"Instance Settings", None))
         self.pb_instance_folder.setText(QCoreApplication.translate("MainWindow", u"Instance Folder", None))
         self.pb_siege_folder.setText(QCoreApplication.translate("MainWindow", u"Siege Folder", None))
         self.pb_create_shortcut.setText(QCoreApplication.translate("MainWindow", u"Create Shortcut", None))
-        self.pb_export_instance.setText(QCoreApplication.translate("MainWindow", u"Export Instance", None))
         self.pb_delete.setText(QCoreApplication.translate("MainWindow", u"Delete", None))
     # retranslateUi
 

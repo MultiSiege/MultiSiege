@@ -2,14 +2,13 @@ import enum
 import os
 
 GLOBAL_SETTINGS = './global_settings.json'
-SENTRY_LOCATION = os.path.abspath('./sentries')
 
 SIEGE_APP_ID = 359550
 
 DEPOT_DOWNLOADER = os.path.abspath(os.path.join(os.getcwd(), "assets", "DepotDownloader", "DepotDownloader.exe"))
-Y1SX_Y6S4_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y1SX_Y6S2"))
+Y1SX_Y6S4_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y1SX-Y6S2"))
 Y6S3_CRACK = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S3"))
-Y6S4_Y8SX_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S4_Y8SX"))
+Y6S4_Y8SX_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S4-Y8SX"))
 
 SCIPTFILE="""
 Set oWS = WScript.CreateObject("WScript.Shell") 
@@ -199,7 +198,7 @@ class CrackType(enum.Enum):
     Y6S3 = "Y6S3"
     Y6S4_Y8SX = "Y6S4_Y8SX"
 
-class SiegeVersion_CrackTypes(enum.Enum):
+class SiegeVersions_CrackTypes(enum.Enum):
     VANILLA = CrackType.Y1SX_Y6S2
     BLACK_ICE = CrackType.Y1SX_Y6S2
     DUST_LINE = CrackType.Y1SX_Y6S2
@@ -234,7 +233,6 @@ class SiegeVersion_CrackTypes(enum.Enum):
     HEAVY_METTLE = CrackType.Y6S4_Y8SX
     DEEP_FREEZE = CrackType.Y6S4_Y8SX
     DEADLY_OMEN = CrackType.Y6S4_Y8SX
-
 
 class Status(enum.Enum):
     """
