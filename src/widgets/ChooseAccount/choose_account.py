@@ -64,6 +64,7 @@ class ChooseAccountWindow(qtw.QDialog, Ui_choose_account):
     def exec(self, accounts: list[AccountModel]) -> int:
         self.accounts_model = AccountsModel(accounts)
         self.tv_accounts.setModel(self.accounts_model)
+        self.pb_accept.setEnabled(False)
 
         self.setFocus()
 
