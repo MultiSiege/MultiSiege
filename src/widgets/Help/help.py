@@ -17,6 +17,8 @@ class HelpWindow(qtw.QDialog, Ui_about_and_help_dialog):
         self.link_discord_server.setTextInteractionFlags(qtc.Qt.TextInteractionFlag.TextBrowserInteraction)
         self.link_website.setTextInteractionFlags(qtc.Qt.TextInteractionFlag.TextBrowserInteraction)
 
+        self.pb_close.setMinimumWidth(104)
+
         self.link_multisiege_github.setOpenExternalLinks(True)
         self.link_guides_and_faqs.setOpenExternalLinks(True)
         self.link_discord_server.setOpenExternalLinks(True)

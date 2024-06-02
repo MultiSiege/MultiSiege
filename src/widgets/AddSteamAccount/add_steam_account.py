@@ -17,6 +17,9 @@ class AddSteamAccountWindow(qtw.QDialog, Ui_dialog_add_steam_account):
         self.le_account_name.textChanged.connect(self.handle_accept_button)
         self.le_password.textChanged.connect(self.handle_accept_button)
 
+        self.pb_accept.setMinimumWidth(104)
+        self.pb_reject.setMinimumWidth(104)
+
     @qtc.Slot()
     def handle_accept_button(self) -> None:
         if len(self.le_account_name.text()) >= 2 and len(self.le_password.text()) >= 8:

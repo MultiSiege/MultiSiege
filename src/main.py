@@ -213,7 +213,6 @@ class MultiSiege:
 
         current_instance.download(account_name, password, sku_rus)
 
-
     #==============#
     #HELPER METHODS#
     #==============#

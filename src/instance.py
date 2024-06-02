@@ -105,14 +105,18 @@ class Instance:
 
         crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value
 
+        command = ""
+
         #download localisation files
         if sku_rus:
-            subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
+            command += f'wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
         else:
-            subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
+            command += f'wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
 
         #download content
-        subprocess.run(f"wt {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir {os.path.abspath(self.SIEGE_DIRECTORY)} -validate")
+        command += f' ; {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
+
+        subprocess.run(command)
 
         #add crack files
         if crack_type == CrackType.Y1SX_Y6S2:
