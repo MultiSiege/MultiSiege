@@ -172,7 +172,8 @@ class MultiSiege:
         
         try:
             current_instance.create_shortcut(self.ui.create_shortcut_dialog.le_shortcut_path.text())
-        except:
+        except Exception as e:
+            print(e)
             logger.log("Could not create shortcut with path specified.", LogLevel.ERROR)
 
     @qtc.Slot()

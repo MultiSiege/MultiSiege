@@ -5,7 +5,7 @@ import os
 import logger
 import subprocess
 import shutil
-import tempfile
+from win32com.client import Dispatch
 
 class Console:
     def __init__(self) -> None:
@@ -124,27 +124,20 @@ class Instance:
 
         logger.log(f"Download completed for {self.settings.instance_name}.", LogLevel.INFO)
 
-    def create_shortcut(self, name: str, shortcut_path: str) -> None:
+    def create_shortcut(self, shortcut_path: str) -> None:
         """
         Creates a shortcut for the RainbowSix.bat file with the `shortcut_path` specified.
         """
-        siege_bat_path = os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")
+        siege_bat_path = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat"))
         if not os.path.isfile(siege_bat_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.bat", LogLevel.WARNING)
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            bat_file= os.path.join(tmpdir, "CreateShortcut.vbs")
-            with open(bat_file, "w") as fout:
-                fout.write(SCIPTFILE.format(name=shortcut_path, targetpath=siege_bat_path))
-            try:
-                subprocess.call(["cscript", bat_file], cwd=tmpdir)
-            except Exception as ex:
-                self.console.log("Error creating shoutcut", LogLevel.ERROR)
-                self.console.log(ex, LogLevel.ERROR)
- 
-            self.console.log(f"Shortcut link created, check {shortcut_path}", LogLevel.INFO)
+        shell = Dispatch('WScript.Shell')
+        shortcut = shell.CreateShortCut(shortcut_path)
+        shortcut.Targetpath = siege_bat_path
+        shortcut.WorkingDirectory = self.SIEGE_DIRECTORY
+        shortcut.save()
 
-    def export_instance(self) -> None:
-        pass
+        logger.log(f"Shortcut successfully created for {self.settings.instance_name}", LogLevel.INFO)
 
     def delete(self) -> None:
         """
