@@ -57,13 +57,23 @@ class Instance:
                 
     def launch(self) -> None:
         """
-        Attempts to launch the instance through `RainbowSix.bat`. If it cannot launch, it will download the files again.
+        Attempts to launch the instance through `RainbowSix.bat`. If it cannot launch, it will paste in cracks again.
         """
         try:
             self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
             self.console.log("Could not find RainbowSix.bat, try verifying files to recover lost data.", LogLevel.ERROR)
             self.siege_process = None
+
+            crack_type = SiegeVersions_CrackTypes[self.settings.version.name].version
+
+            #add crack files
+            if crack_type == CrackType.Y1SX_Y6S2:
+                shutil.copytree(Y1SX_Y6S4_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
+            elif crack_type == CrackType.Y6S3:
+                shutil.copytree(Y6S3_CRACK, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
+            else:
+                shutil.copytree(Y6S4_Y8SX_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
             return
 
         out, err = self.siege_process.communicate()
@@ -103,8 +113,6 @@ class Instance:
         manifest_sku_ww = SiegeManifests_SKU_WW[self.settings.version.name]
         manifest_sku_rus = SiegeManifests_SKU_RUS[self.settings.version.name]
 
-        crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value
-
         command = ""
 
         #download localisation files
@@ -116,14 +124,6 @@ class Instance:
         #download content
         command += f' & {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
         subprocess.run(command)
-
-        #add crack files
-        if crack_type == CrackType.Y1SX_Y6S2:
-            shutil.copytree(Y1SX_Y6S4_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
-        elif crack_type == CrackType.Y6S3:
-            shutil.copytree(Y6S3_CRACK, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
-        else:
-            shutil.copytree(Y6S4_Y8SX_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
 
         logger.log(f"Download completed for {self.settings.instance_name}.", LogLevel.INFO)
 
