@@ -53,7 +53,7 @@ class MultiSiege:
         self.ui.choose_account_dialog.account_selected.connect(self.handle_download)
         self.ui.choose_account_dialog.one_time_account_created.connect(self.handle_download_one_time_account)
 
-        #self.ui.pb_launch.clicked.connect()
+        self.ui.pb_launch.clicked.connect(self.open_current_instance)
 
     #=============#
     #SETUP METHODS#
@@ -214,6 +214,12 @@ class MultiSiege:
         current_instance = self.instances[self.ui.current_widget.index]
 
         current_instance.download(account_name, password, sku_rus)
+
+    @qtc.Slot()
+    def open_current_instance(self) -> None:
+        current_instance = self.instances[self.ui.current_widget.index]
+
+        current_instance.launch()
 
     #==============#
     #HELPER METHODS#

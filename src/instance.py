@@ -6,6 +6,7 @@ import logger
 import subprocess
 import shutil
 from win32com.client import Dispatch
+import configparser
 
 class Console:
     def __init__(self) -> None:
@@ -55,35 +56,43 @@ class Instance:
                     logger.log("Invalid instance data, skipping instance.", LogLevel.WARNING)
                     raise ValueError('Invalid instance data.')
                 
-    def launch(self) -> None:
+    def launch(self) -> bool:
         """
         Attempts to launch the instance through `RainbowSix.bat`. If it cannot launch, it will paste in cracks again.
+
+        Returns a `bool` for if the operation succeeded or not.
         """
+        rainbowsix_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe"))
+        rainbowsixgame_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSixGame.exe"))
+
+        if os.path.isfile(rainbowsix_exe):
+            file_path = rainbowsix_exe
+        elif os.path.isfile(rainbowsixgame_exe):
+            file_path = rainbowsixgame_exe
+        else:
+            self.console.log("Executable file does not exist!")
+            return False
+        
+        crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value
+
+        if crack_type == CrackType.Y1SX_Y6S2:
+            crack = Y1SX_Y6S4_CRACKS
+        elif crack_type == CrackType.Y6S3:
+            crack = Y6S3_CRACK
+        else:
+            crack = Y6S4_Y8SX_CRACKS
+
+        shutil.copytree(crack, self.SIEGE_DIRECTORY, dirs_exist_ok=True)#cba to deal with different hashes of files that may make the crack not work        
+        self.dump_crack()
+
         try:
-            self.siege_process = subprocess.Popen([os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat")], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.siege_process = subprocess.Popen([file_path, "/belaunch"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except FileNotFoundError:
-            self.console.log("Could not find RainbowSix.bat, try verifying files to recover lost data.", LogLevel.ERROR)
+            self.console.log("Could not find siege executable, try verifying files to recover lost data.", LogLevel.ERROR)
             self.siege_process = None
 
-            crack_type = SiegeVersions_CrackTypes[self.settings.version.name].version
-
-            #add crack files
-            if crack_type == CrackType.Y1SX_Y6S2:
-                shutil.copytree(Y1SX_Y6S4_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
-            elif crack_type == CrackType.Y6S3:
-                shutil.copytree(Y6S3_CRACK, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
-            else:
-                shutil.copytree(Y6S4_Y8SX_CRACKS, self.SIEGE_DIRECTORY, dirs_exist_ok=True)
-            return
-
-        out, err = self.siege_process.communicate()
-
-        if self.siege_process.returncode != 0:
-            self.console.log(f"Siege process returned with error code {self.siege_process.returncode}. Check you have verified files correctly.", LogLevel.ERROR)
-        else:
-            self.console.log(f"Siege process successfully finished", LogLevel.INFO)
-
-        self.siege_process = None
+            return False
+        return True
 
     def kill(self) -> None:
         """
@@ -99,10 +108,10 @@ class Instance:
         self.console.log("Killed siege process that is currently running.", LogLevel.WARNING)
 
     def open_instance_folder(self) -> None:
-        subprocess.Popen(f"explorer {os.path.abspath(self.INSTANCE_DIRECTORY)}")
+        subprocess.call(f"explorer {os.path.abspath(self.INSTANCE_DIRECTORY)}")
     
     def open_siege_folder(self) -> None:
-        subprocess.Popen(f"explorer {os.path.abspath(self.SIEGE_DIRECTORY)}")
+        subprocess.call(f"explorer {os.path.abspath(self.SIEGE_DIRECTORY)}")
 
     def download(self, username: str, password: str, sku_rus: bool) -> None:
         """
@@ -131,13 +140,22 @@ class Instance:
         """
         Creates a shortcut for the RainbowSix.bat file with the `shortcut_path` specified.
         """
-        siege_bat_path = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.bat"))
-        if not os.path.isfile(siege_bat_path): return self.console.log("Attempted to create shortcut with missing RainbowSix.bat", LogLevel.WARNING)
+        rainbowsix_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe"))
+        rainbowsixgame_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSixGame.exe"))
+
+        if os.path.isfile(rainbowsix_exe):
+            file_path = rainbowsix_exe
+        elif os.path.isfile(rainbowsixgame_exe):
+            file_path = rainbowsixgame_exe
+        else:
+            self.console.log("Executable file does not exist!")
+            return False
 
         shell = Dispatch('WScript.Shell')
         shortcut = shell.CreateShortCut(shortcut_path)
-        shortcut.Targetpath = siege_bat_path
+        shortcut.Targetpath = file_path
         shortcut.WorkingDirectory = self.SIEGE_DIRECTORY
+        shortcut.IconLocation = file_path
         shortcut.save()
 
         logger.log(f"Shortcut successfully created for {self.settings.instance_name}", LogLevel.INFO)
@@ -153,13 +171,33 @@ class Instance:
             logger.log(f"Failed to remove instance {self.settings.instance_name}", LogLevel.ERROR)
             raise ValueError(f"Failed to remove instance {self.settings.instance_name}")
     
-    def dump_codex(self) -> None:
+    def dump_crack(self) -> None:
         """
-        Dumps the relevant `GAMENAME` and `USERNAME` onto the `CODEX.ini` crack file.
+        Dumps the relevant `GAMENAME` and `USERNAME` onto the relevant crack file.
         """
-        try:
-            with open(os.path.join(self.SIEGE_DIRECTORY, "CODEX.ini"), "r+") as f:
-                pass
+        crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value
 
-        except:
-            self.console.log("Could not modify CODEX.ini crack file.")
+        if crack_type == CrackType.Y1SX_Y6S2 or crack_type == CrackType.Y6S3:
+            #codex dump
+            codex = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "CODEX.ini"))
+            config = configparser.ConfigParser()
+            config.read(codex)
+            config['Settings']['GameName'] = f"{self.settings.version.value}_{self.settings.version.name}"
+            with open(codex, "w") as config_file:
+                config.write(config_file)
+
+            #cplay dump
+            cplay = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "CPlay.ini"))
+            config = configparser.ConfigParser()
+            config.read(cplay)
+            config['Uplay']['Username'] = self.settings.username
+            with open(cplay, "w") as config_file:
+                config.write(config_file)
+        else:
+            #uplay_r2 dump
+            uplay_r2 = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "uplay_r2.ini"))
+            config = configparser.ConfigParser()
+            config.read(uplay_r2)
+            config['Settings']['Username'] = self.settings.username
+            with open(uplay_r2, "w") as config_file:
+                config.write(config_file)
