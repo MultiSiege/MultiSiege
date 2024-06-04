@@ -3,3 +3,4 @@ __pycache__
 global_settings.json
 instances
 mods
+dist
