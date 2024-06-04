@@ -24,6 +24,10 @@ The main entry point for the project is `main.py` (in the root level directory o
 
 Compiling into an executable file will only be used for releases.
 
+```bash
+pyinstaller MultiSiege.spec
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
