@@ -32,7 +32,7 @@ class FeaturesModel(BaseModel):
     @classmethod
     def check_folder(cls, v: str, info: ValidationInfo) -> str:
         if not os.path.isdir(v):
-            raise ValueError(f'The path for {info.field_name} must lead to an existing directory.')
+            os.mkdir(v)
         return v
 
 class GlobalSettingsModel(BaseModel):
