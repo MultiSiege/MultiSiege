@@ -10,14 +10,6 @@ Y1SX_Y6S4_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks",
 Y6S3_CRACK = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S3"))
 Y6S4_Y8SX_CRACKS = os.path.abspath(os.path.join(os.getcwd(), "assets", "cracks", "Y6S4-Y8SX"))
 
-SCIPTFILE="""
-Set oWS = WScript.CreateObject("WScript.Shell") 
-sLinkFile = "{name}"
-Set oLink = oWS.CreateShortcut(sLinkFile)
-oLink.TargetPath = "{targetpath}"
-oLink.Save
-"""
-
 class MyEnumMeta(enum.EnumMeta): 
     def __contains__(cls, item): 
         try:

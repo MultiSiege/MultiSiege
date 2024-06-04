@@ -55,6 +55,8 @@ class MultiSiege:
 
         self.ui.pb_launch.clicked.connect(self.open_current_instance)
 
+        self.ui.pb_folders.clicked.connect(self.open_multisiege_folder)
+
     #=============#
     #SETUP METHODS#
     #=============#
@@ -220,6 +222,10 @@ class MultiSiege:
         current_instance = self.instances[self.ui.current_widget.index]
 
         current_instance.launch()
+
+    @qtc.Slot()
+    def open_multisiege_folder(self) -> None:
+        subprocess.call(f"explorer {os.path.abspath(os.getcwd())}")
 
     #==============#
     #HELPER METHODS#
