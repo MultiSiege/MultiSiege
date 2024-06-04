@@ -103,6 +103,9 @@ class NewInstance(qtw.QDialog, Ui_NewInstance):
         self.filter_year4.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year4, 4))
         self.filter_year5.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year5, 5))
         self.filter_year6.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year6, 6))
+        self.filter_year7.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year7, 7))
+        self.filter_year8.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year8, 8))
+        self.filter_year9.checkStateChanged.connect(lambda: self.apply_year_filter(self.filter_year9, 9))
 
         self.treeView_seasons.selectionModel().currentRowChanged.connect(self.set_placeholder_text)
 
