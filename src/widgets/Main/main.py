@@ -4,7 +4,7 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
+sys.path.append('src\widgets')
 from Main.UI.main_window import Ui_MainWindow
 from NewInstance.new_instance import NewInstance
 from GlobalSettings.global_settings import GlobalSettingsWindow
