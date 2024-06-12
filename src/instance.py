@@ -29,9 +29,6 @@ class Instance:
 
         self.console = Console()
 
-        if not os.path.isdir(self.INSTANCE_DIRECTORY): os.mkdir(self.INSTANCE_DIRECTORY)
-        if not os.path.isdir(self.SIEGE_DIRECTORY): os.mkdir(self.SIEGE_DIRECTORY)
-
         self.siege_process: subprocess.Popen[bytes] | None = None
 
         if load_from_file:
@@ -55,6 +52,9 @@ class Instance:
                 except:
                     logger.log("Invalid instance data, skipping instance.", LogLevel.WARNING)
                     raise ValueError('Invalid instance data.')
+                
+        if not os.path.isdir(self.INSTANCE_DIRECTORY): os.mkdir(self.INSTANCE_DIRECTORY)
+        if not os.path.isdir(self.SIEGE_DIRECTORY): os.mkdir(self.SIEGE_DIRECTORY)
                 
     def launch(self) -> bool:
         """
@@ -126,13 +126,13 @@ class Instance:
 
         #download localisation files
         if sku_rus:
-            command += f'wt cmd /c {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
+            command += f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
         else:
-            command += f'wt cmd /c {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
+            command += f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
 
         #download content
         command += f' & {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}"'
-        subprocess.run(command)
+        subprocess.run(f"wt cmd /c {command}")
 
         logger.log(f"Download completed for {self.settings.instance_name}.", LogLevel.INFO)
 

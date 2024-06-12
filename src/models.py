@@ -10,18 +10,10 @@ class AccountModel(BaseModel):
     username: str
     password: str
 
-    @field_validator('username', 'password')
-    def check_alphanumeric(cls, v: str, info: ValidationInfo) -> str:
-        if isinstance(v, str):
-            # info.field_name is the name of the field being validated
-            is_alphanumeric = v.replace(' ', '').isalnum()
-            assert is_alphanumeric, f'{info.field_name} must be alphanumeric'
-        return v
-
 class FeaturesModel(BaseModel):
     mode: Mode = Mode.LIGHT
-    instances_folder: str = './instances'
-    mods_folder: str = './mods'
+    instances_folder: str = os.path.join(os.getcwd(), 'instances')
+    mods_folder: str = os.path.join(os.getcwd(), 'mods')
     check_for_update_on_start: bool = True
     
     @field_serializer('mode', when_used='json')

@@ -1,7 +1,7 @@
 import enum
 import os
 
-GLOBAL_SETTINGS = './global_settings.json'
+GLOBAL_SETTINGS = os.path.join(os.getcwd(), 'global_settings.json')
 
 SIEGE_APP_ID = 359550
 
