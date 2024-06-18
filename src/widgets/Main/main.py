@@ -13,6 +13,7 @@ from Delete.delete import DeleteWindow
 from CreateShortcut.create_shortcut import CreateShortcutWindow
 from InstanceSettings.instance_settings import InstanceSettingsWindow
 from ChooseAccount.choose_account import ChooseAccountWindow
+from Error.error import ErrorWindow
 
 sys.path.append('src')
 from instance import Instance
@@ -167,6 +168,7 @@ class MainWindow(qtw.QWidget, Ui_MainWindow):
         self.create_shortcut_dialog = CreateShortcutWindow(self)
         self.instance_settings_dialog = InstanceSettingsWindow(self)
         self.choose_account_dialog = ChooseAccountWindow(self)
+        self.error_dialog = ErrorWindow(self)
 
         self.flow_layout_instances = FlowLayout(parent=self.scrollAreaWidgetContents)
 

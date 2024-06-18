@@ -6,6 +6,9 @@
     <file>magic-wand-icon.svg</file>
     <file>settings-cog.svg</file>
   </qresource>
+  <qresource prefix="error_logo">
+    <file>Cross_red_circle.svg</file>
+  </qresource>
   <qresource prefix="help_logo">
     <file>logo_help.png</file>
   </qresource>

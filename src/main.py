@@ -255,6 +255,12 @@ class MultiSiege:
         for instance in self.instances:
             self.ui.add_instance_widget(instance)
 
+    def throw_error(self, error_message: str) -> None:
+        """
+        Throw an error to be displayed in the UI.
+        """
+        self.ui.error_dialog.exec(error_message)
+
 if __name__ == "__main__":
     multi_siege = MultiSiege()
 
