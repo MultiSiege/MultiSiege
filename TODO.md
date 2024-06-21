@@ -4,6 +4,7 @@
 * Breaks in OneDrive folders (need OneDrive check)
 * When you launch after you just played it doesn't work because RainbowSix background process is still running
 * Windows 10 doesn't have Windows Terminal emulator on PATH (or at all), so downloader doesn't work for that OS
+* Shortcut path doesn't have /belaunch argument, so launches with BattlEye enabled
 
 # Features
 
@@ -12,3 +13,4 @@
 * UI error messages
 * Check for any RainbowSix or RainbowSixGame processes that are currently running
 * Find better way to pack season metadata (a couple enums makes a lot of code redundant)
+* Custom icons for instances
