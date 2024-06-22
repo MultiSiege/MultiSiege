@@ -4,7 +4,7 @@
 * Breaks in OneDrive folders (need OneDrive check)
 * When you launch after you just played it doesn't work because RainbowSix background process is still running
 * Windows 10 doesn't have Windows Terminal emulator on PATH (or at all), so downloader doesn't work for that OS
-* Shortcut path doesn't have /belaunch argument, so launches with BattlEye enabled
+* Shortcut path doesn't have /belaunch argument, so launches with BattlEye enabled - Fixed
 
 # Features
 

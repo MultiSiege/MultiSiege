@@ -148,13 +148,14 @@ class Instance:
             file_path = rainbowsixgame_exe
         else:
             self.console.log("Executable file does not exist!")
-            return False
+            return
 
         shell = Dispatch('WScript.Shell')
         shortcut = shell.CreateShortCut(shortcut_path)
         shortcut.Targetpath = file_path
         shortcut.WorkingDirectory = self.SIEGE_DIRECTORY
         shortcut.IconLocation = file_path
+        shortcut.Arguments = "/belaunch"
         shortcut.save()
 
         logger.log(f"Shortcut successfully created for {self.settings.instance_name}", LogLevel.INFO)
