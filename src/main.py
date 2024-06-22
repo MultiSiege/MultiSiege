@@ -115,6 +115,10 @@ class MultiSiege:
         """
         Override the global_settings object with the one from our global settings dialog if the user has accepted the changes.
         """
+        if "OneDrive" in self.ui.global_settings_dialog.settings.features.instances_folder:
+            self.throw_error("OneDrive folder in instance folder path, change your instance folder to be outside OneDrive.")
+            return
+        
         self.global_settings = self.ui.global_settings_dialog.settings
         self.global_settings.dump_settings()
 
@@ -157,7 +161,10 @@ class MultiSiege:
     def delete_instance(self) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
 
-        current_instance.delete()
+        try:
+            current_instance.delete()
+        except:
+            self.throw_error(f"Failed to remove instance {current_instance.settings.instance_name}")
         self.refresh_instances()
 
     @qtc.Slot()
@@ -172,7 +179,9 @@ class MultiSiege:
         shortcut_path = self.ui.create_shortcut_dialog.le_shortcut_path.text()
 
         if not shortcut_path.endswith(".lnk"):
-            return logger.log("Attempted to create shortcut that doesn't end in .lnk", LogLevel.WARNING)
+            logger.log("Attempted to create shortcut that doesn't end in .lnk", LogLevel.WARNING)
+            self.throw_error("Attempted to create shortcut that doesn't end in .lnk")
+            return
         
         try:
             current_instance.create_shortcut(self.ui.create_shortcut_dialog.le_shortcut_path.text())
@@ -252,7 +261,10 @@ class MultiSiege:
             if not os.path.isdir(folder):
                 logger.log("File found in top level directory of instances folder.", LogLevel.WARNING)
             else:
-                self.instances.append(Instance(folder, True))
+                try:
+                    self.instances.append(Instance(folder, True))
+                except:
+                    continue
 
         self.sort_instances()
 
