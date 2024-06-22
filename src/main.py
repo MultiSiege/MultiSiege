@@ -179,6 +179,7 @@ class MultiSiege:
         except Exception as e:
             print(e)
             logger.log("Could not create shortcut with path specified.", LogLevel.ERROR)
+            self.throw_error("Could not create shortcut with path specified.")
 
     @qtc.Slot()
     def open_instance_settings_window(self) -> None:
@@ -221,6 +222,10 @@ class MultiSiege:
     def open_current_instance(self) -> None:
         current_instance = self.instances[self.ui.current_widget.index]
 
+        if self.process_exists("RainbowSix.exe") or self.process_exists("RainbowSixGame.exe"):
+            self.throw_error("RainbowSix or RainbowSixGame process is already running. If you don't have it open check background processes in Task Manager or expand the MultiSiege process.")
+            return
+        
         current_instance.launch()
 
     @qtc.Slot()
@@ -260,6 +265,13 @@ class MultiSiege:
         Throw an error to be displayed in the UI.
         """
         self.ui.error_dialog.exec(error_message)
+
+    def process_exists(self, process_name):
+        progs = str(subprocess.check_output('tasklist'))
+        if process_name in progs:
+            return True
+        else:
+            return False
 
 if __name__ == "__main__":
     multi_siege = MultiSiege()
