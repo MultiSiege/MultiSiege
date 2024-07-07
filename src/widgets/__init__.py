@@ -1,7 +1,7 @@
 import sys
 import os
 
-if os.path.exists(os.path.join(os.getcwd(), 'src')): #if we have compiled there is no need to do this.
+if getattr(sys, 'frozen', True): #if we have compiled there is no need to append our folders to PATH
     sys.path.append(os.path.join(os.getcwd(), 'src'))
     sys.path.append(os.path.join(os.getcwd(), 'src', 'widgets'))
 

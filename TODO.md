@@ -5,8 +5,8 @@
 * When you launch after you just played it doesn't work because RainbowSix background process is still running - Now has a check so they can kill process manually
 * Windows 10 doesn't have Windows Terminal emulator on PATH (or at all), so downloader doesn't work for that OS
 * Shortcut path doesn't have /belaunch argument, so launches with BattlEye enabled - Fixed
-* When launching from anywhere other than the EXE itself it fails because it doesn't know its current working directory.
-* We append the same modules (src and src/widgets) to PATH multiple times, need to call it once.
+* When launching from anywhere other than the EXE itself it fails because it doesn't know its current working directory. - Fixed
+* We append the same modules (src and src/widgets) to PATH multiple times, need to call it once. - Fixed
 
 # Features
 

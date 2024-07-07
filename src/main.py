@@ -1,8 +1,13 @@
+import os
+import sys
+
+if getattr(sys, 'frozen', False): #if we have compiled then we need to change our working directory if we dont launch directly from the exe
+    application_path = os.path.dirname(sys.executable)
+    os.chdir(application_path)
+
 from settings import *
 from constants import *
 import logger
-import os
-import sys
 import subprocess
 import qdarkstyle
 from PySide6 import (
