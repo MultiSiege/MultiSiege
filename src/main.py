@@ -36,6 +36,11 @@ class MultiSiege:
         self.setup_ui()
         self.setup_instances()
 
+        #OneDrive check
+        if "OneDrive" in os.getcwd():
+            if self.throw_error("OneDrive folder detected in MultiSiege path. OneDrive breaks downloading of old versions, place the MultiSiege folder in another directory. The program will now terminate."):
+                sys.exit()
+
         #slot handling
         self.ui.pb_instance_folder.clicked.connect(self.open_instance_folder)
         self.ui.pb_siege_folder.clicked.connect(self.open_siege_folder)
@@ -278,11 +283,11 @@ class MultiSiege:
         for instance in self.instances:
             self.ui.add_instance_widget(instance)
 
-    def throw_error(self, error_message: str) -> None:
+    def throw_error(self, error_message: str) -> int:
         """
         Throw an error to be displayed in the UI.
         """
-        self.ui.error_dialog.exec(error_message)
+        return self.ui.error_dialog.exec(error_message)
 
     def process_exists(self, process_name: str) -> bool:
         """
