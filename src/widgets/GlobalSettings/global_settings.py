@@ -4,11 +4,8 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from GlobalSettings.UI.global_settings_window import Ui_dialog_global_settings
 from AddSteamAccount.add_steam_account import AddSteamAccountWindow
-
-sys.path.append('src')
 from models import *
 from settings import *
 

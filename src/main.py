@@ -235,7 +235,8 @@ class MultiSiege:
             self.throw_error("RainbowSix or RainbowSixGame process is already running. If you don't have it open check background processes in Task Manager or expand the MultiSiege process.")
             return
         
-        current_instance.launch()
+        if not current_instance.launch():
+            self.throw_error("Siege executable does not exist! Please download the siege version. If your RainbowSix.exe file is missing, tick the checkbox in the download menu to use the SKU RUS downloader.")
 
     @qtc.Slot()
     def open_multisiege_folder(self) -> None:
@@ -278,7 +279,10 @@ class MultiSiege:
         """
         self.ui.error_dialog.exec(error_message)
 
-    def process_exists(self, process_name):
+    def process_exists(self, process_name: str) -> bool:
+        """
+        Check if `process_name` is currently running.
+        """
         progs = str(subprocess.check_output('tasklist'))
         if process_name in progs:
             return True

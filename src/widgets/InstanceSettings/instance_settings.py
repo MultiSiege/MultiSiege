@@ -4,8 +4,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
-sys.path.append('src')
 from InstanceSettings.UI.instance_settings_window import Ui_instance_settings
 from settings import InstanceSettings
 from constants import SiegeVersions

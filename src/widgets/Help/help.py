@@ -4,7 +4,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from Help.UI.help_window import Ui_about_and_help_dialog
 
 class HelpWindow(qtw.QDialog, Ui_about_and_help_dialog):

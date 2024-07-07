@@ -4,7 +4,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from Main.UI.main_window import Ui_MainWindow
 from NewInstance.new_instance import NewInstance
 from GlobalSettings.global_settings import GlobalSettingsWindow
@@ -14,8 +13,6 @@ from CreateShortcut.create_shortcut import CreateShortcutWindow
 from InstanceSettings.instance_settings import InstanceSettingsWindow
 from ChooseAccount.choose_account import ChooseAccountWindow
 from Error.error import ErrorWindow
-
-sys.path.append('src')
 from instance import Instance
 
 class InstanceWidget(qtw.QFrame):

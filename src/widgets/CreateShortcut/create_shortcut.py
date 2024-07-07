@@ -5,7 +5,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from CreateShortcut.UI.shortcut_window import Ui_Create_Shortcut
 
 class CreateShortcutWindow(qtw.QDialog, Ui_Create_Shortcut):

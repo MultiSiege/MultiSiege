@@ -4,7 +4,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from Delete.UI.delete_window import Ui_Dialog
 
 class DeleteWindow(qtw.QDialog, Ui_Dialog):

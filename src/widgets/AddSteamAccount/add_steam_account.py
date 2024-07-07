@@ -4,7 +4,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from AddSteamAccount.UI.add_steam_account_window import Ui_dialog_add_steam_account
 
 class AddSteamAccountWindow(qtw.QDialog, Ui_dialog_add_steam_account):

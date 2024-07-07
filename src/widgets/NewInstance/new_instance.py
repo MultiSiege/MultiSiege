@@ -5,8 +5,6 @@ from PySide6 import (
     QtGui as qtg
 )
 from NewInstance.UI.new_instance_window import Ui_NewInstance
-
-sys.path.append('src') #python can't usually find the constants module, so we have to manually append it to our path
 from constants import *
 
 class SeasonsModel(qtg.QStandardItemModel):

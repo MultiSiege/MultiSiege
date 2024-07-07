@@ -31,6 +31,9 @@ class Instance:
 
         self.siege_process: subprocess.Popen[bytes] | None = None
 
+        if not os.path.isdir(self.INSTANCE_DIRECTORY): os.mkdir(self.INSTANCE_DIRECTORY)
+        if not os.path.isdir(self.SIEGE_DIRECTORY): os.mkdir(self.SIEGE_DIRECTORY)
+
         if load_from_file:
             try:
                 self.settings = InstanceSettings(self.SETTINGS_PATH)
@@ -53,9 +56,6 @@ class Instance:
                     logger.log("Invalid instance data, skipping instance.", LogLevel.WARNING)
                     raise ValueError('Invalid instance data.')
                 
-        if not os.path.isdir(self.INSTANCE_DIRECTORY): os.mkdir(self.INSTANCE_DIRECTORY)
-        if not os.path.isdir(self.SIEGE_DIRECTORY): os.mkdir(self.SIEGE_DIRECTORY)
-                
     def launch(self) -> bool:
         """
         Attempts to launch the instance through `RainbowSix.bat`. If it cannot launch, it will paste in cracks again.
@@ -70,7 +70,7 @@ class Instance:
         elif os.path.isfile(rainbowsixgame_exe):
             file_path = rainbowsixgame_exe
         else:
-            self.console.log("Executable file does not exist!")
+            self.console.log("Executable file does not exist!", LogLevel.ERROR)
             return False
         
         crack_type = SiegeVersions_CrackTypes[self.settings.version.name].value

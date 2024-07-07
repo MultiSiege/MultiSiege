@@ -5,7 +5,6 @@ from PySide6 import (
     QtWidgets as qtw,
     QtGui as qtg
 )
-sys.path.append('src/widgets')
 from Error.UI.error_window import Ui_error_dialog
 
 class ErrorWindow(qtw.QDialog, Ui_error_dialog):
