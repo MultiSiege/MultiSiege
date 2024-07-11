@@ -116,28 +116,52 @@ class Instance:
     def download(self, username: str, password: str, sku_rus: bool) -> None:
         """
         Downloads the instance of siege using `DepotDownloader`.
-        Automatically applies the right crack for the respective season.
         """
         manifest_content = SiegeManifests_CONTENT[self.settings.version.name]
         manifest_sku_ww = SiegeManifests_SKU_WW[self.settings.version.name]
         manifest_sku_rus = SiegeManifests_SKU_RUS[self.settings.version.name]
 
-        command = ""
-
         #download localisation files
         if sku_rus:
-            command += f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate'
+            command_loc = f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_RUS} -manifest {manifest_sku_rus} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate -max-servers 20 -max-downloads 20'
         else:
-            command += f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate'
+            command_loc = f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.SKU_WW} -manifest {manifest_sku_ww} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate -max-servers 20 -max-downloads 20'
 
         #download content
-        command += f' & {DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate'
-        subprocess.run(f"wt cmd /c {command}")
+        command_content = f'{DEPOT_DOWNLOADER} -app {SIEGE_APP_ID} -depot {SiegeDepots.CONTENT} -manifest {manifest_content} -username {username} -password {password} -dir "{os.path.abspath(self.SIEGE_DIRECTORY)}" -validate -max-servers 20 -max-downloads 20'
+
+        def format_season_label(label: str) -> str:
+            label_list = label.split("_")
+
+            new_label = ""
+
+            for label in label_list:
+                new_label += label[0].upper() + label[1:].lower() + " "
+
+            return new_label[:-1]
+
+        batch_file = """@echo off
+        Title Downloading {version}...
+        {command_loc}
+        {command_content}
+        Title Download Finished!
+        echo Download Finished!
+        pause
+        exit
+        """.format(version=format_season_label(self.settings.version.name), command_loc=command_loc, command_content=command_content)
+
+        script_path = os.path.join(os.getcwd(), "assets", "DepotDownloader", "download.bat")
+
+        with open(script_path, "w") as fp:
+            fp.write(batch_file)
+
+        subprocess.run(["start", "cmd", "/k", script_path], shell=True)
+            
         logger.log(f"Download completed for {self.settings.instance_name}.", LogLevel.INFO)
 
     def create_shortcut(self, shortcut_path: str) -> None:
         """
-        Creates a shortcut for the RainbowSix.bat file with the `shortcut_path` specified.
+        Creates a shortcut for the `RainbowSix` executable file with the `shortcut_path` specified.
         """
         rainbowsix_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSix.exe"))
         rainbowsixgame_exe = os.path.abspath(os.path.join(self.SIEGE_DIRECTORY, "RainbowSixGame.exe"))
