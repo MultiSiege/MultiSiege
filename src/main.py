@@ -38,8 +38,8 @@ class MultiSiege:
 
         #OneDrive check
         if "OneDrive" in os.getcwd():
-            if self.throw_error("OneDrive folder detected in MultiSiege path. OneDrive breaks downloading of old versions, place the MultiSiege folder in another directory. The program will now terminate."):
-                sys.exit()
+            self.throw_error("OneDrive folder detected in MultiSiege path. OneDrive breaks downloading of old versions, place the MultiSiege folder in another directory. The program will now terminate.")
+            sys.exit()
 
         #slot handling
         self.ui.pb_instance_folder.clicked.connect(self.open_instance_folder)
